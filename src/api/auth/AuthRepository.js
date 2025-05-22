@@ -1,32 +1,19 @@
 class AuthRepository {
   constructor() {
-// this.baseUrl = 'https://mardev.es/api/auth';
-// this.baseUrl = 'https://mardev.es/api/auth';
-    this.baseUrl = "http://localhost"; // URL base de la API
-    this.userKey = "user"; // Clave para almacenar el usuario
+    this.baseUrl = import.meta.env.VITE_API_URL || 'http://localhost/api/auth';
+    this.userKey = 'user';
   }
 
   isBrowser() {
-    return typeof window !== "undefined";
+    return typeof window !== 'undefined';
   }
 
-  getAuthHeader() {
-    const user = this.getUser();
-    if (!user) return {};
-    return {
-      "Content-Type": "application/json",
-      Authorization: `${user.token_type} ${user.access_token}`,
-    };
-  }
-
-  // Guarda el usuario en localStorage
   saveUser(data) {
     if (this.isBrowser()) {
       localStorage.setItem(this.userKey, JSON.stringify(data));
     }
   }
 
-  // Obtiene el usuario desde localStorage
   getUser() {
     if (this.isBrowser()) {
       const user = localStorage.getItem(this.userKey);
@@ -35,65 +22,50 @@ class AuthRepository {
     return null;
   }
 
-  getToken(){
-    const user = this.getUser();
-    if (user) {
-      return user.access_token;
-    }
-    return null;
+  getToken() {
+    return this.getUser()?.access_token || null;
   }
 
-  // Elimina el usuario de localStorage
   removeUser() {
     if (this.isBrowser()) {
       localStorage.removeItem(this.userKey);
     }
   }
 
-  // Verifica si el token ha expirado
-  isTokenExpired() {
-    const user = this.getUser();
-    if (!user || !user.expires_at) return true;
-    return new Date(user.expires_at) < new Date();
+  getAuthHeader() {
+    const token = this.getToken();
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
   }
 
-  // Verifica si hay un token válido almacenado
   hasToken() {
-    return !!this.getUser().access_token;
+    return !!this.getToken();
   }
 
-  // Realiza una petición de login
   async login(email, password) {
     try {
       const response = await fetch(`${this.baseUrl}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
-      const responseContent = await response.json();
-      // Accede a la propiedad 'data' del objeto JSON
-      if (responseContent.data) {
-        this.saveUser(responseContent.data); // Guarda el nuevo token
-          
-      }
-      return responseContent;
+      const data = await response.json();
+      if (data.data) this.saveUser(data.data);
+      return data;
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error('[LOGIN ERROR]', error);
       throw error;
     }
   }
 
-  // Realiza una petición de registro
   async register(name, email, password, passwordConfirmation) {
     try {
       const response = await fetch(`${this.baseUrl}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
           email,
@@ -102,84 +74,56 @@ class AuthRepository {
         }),
       });
 
-      const responseContent = await response.json();
-      // Accede a la propiedad 'data' del objeto JSON
-      if (responseContent.data?.access_token) {
-        this.saveUser({
-          access_token: responseContent.data.access_token,
-          expires_at: responseContent.data.expires_at,
-          token_type: responseContent.data.token_type,
-          user: responseContent.data.user,
-        }); // Guarda el nuevo token
-      }
-      return responseContent;
+      const data = await response.json();
+      if (data.data?.access_token) this.saveUser(data.data);
+      return data;
     } catch (error) {
-      console.error("Error during registration:", error);
+      console.error('[REGISTER ERROR]', error);
       throw error;
     }
   }
 
-  // Realiza una petición para obtener los datos del usuario autenticado
   async me() {
     try {
-      const user = this.getUser();
-      if (!user) throw new Error("No token available");
-
       const response = await fetch(`${this.baseUrl}/me`, {
-        method: "GET",
+        method: 'GET',
         headers: this.getAuthHeader(),
       });
 
       return await response.json();
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('[ME ERROR]', error);
       throw error;
     }
   }
 
-  // Realiza una petición para cerrar sesión
   async logout() {
     try {
-      const user = this.getUser();
-      if (!user) throw new Error("No token available");
-
       const response = await fetch(`${this.baseUrl}/logout`, {
-        method: "POST",
+        method: 'POST',
         headers: this.getAuthHeader(),
       });
 
-      this.removeUser(); // Elimina el usuario
+      this.removeUser();
       return await response.json();
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error('[LOGOUT ERROR]', error);
       throw error;
     }
   }
 
-  // Realiza una petición para refrescar el token
   async refresh() {
     try {
-      const user = this.getUser();
-      if (!user) throw new Error("No token available");
-
       const response = await fetch(`${this.baseUrl}/refresh`, {
-        method: "POST",
+        method: 'POST',
         headers: this.getAuthHeader(),
       });
 
-      const responseContent = await response.json();
-      if (responseContent.data?.access_token) {
-        this.saveUser({
-          access_token: responseContent.data.access_token,
-          expires_at: responseContent.data.expires_at,
-          token_type: responseContent.data.token_type,
-          user: responseContent.data.user,
-        });
-      }
-
-      return responseContent;
+      const data = await response.json();
+      if (data.data?.access_token) this.saveUser(data.data);
+      return data;
     } catch (error) {
-      console.error("Error refreshing token:", error);
+      console.error('[REFRESH ERROR]', error);
       throw error;
     }
   }
