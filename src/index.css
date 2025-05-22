@@ -1,13 +1,20 @@
 :root {
   /* Colores base */
-  --primary-color: #FFD60A;        /* Amarillo vibrante y moderno */
-  --dark-color: #111827;           /* Gris muy oscuro (casi negro), fondo base */
-  --gray-color: #6B7280;           /* Gris medio, para texto secundario */
-  --light-color: #F9FAFB;          /* Gris muy claro, ideal para fondos suaves */
+  --primary-color: #FFD60A;
+  --hover-color: #FBBF24;
+  /* Amarillo más oscuro para hover */
+  --dark-color: #0a0f18;
+  /* Gris muy oscuro (casi negro), fondo base */
+  --gray-color: #6B7280;
+  /* Gris medio, para texto secundario */
+  --light-color: #FFFFFF;
+  /* Gris muy claro, ideal para fondos suaves */
 
   /* Colores complementarios */
-  --success-color: #22C55E;        /* Verde lima moderno */
-  --error-color: #EF4444;          /* Rojo vibrante para errores */
+  --success-color: #22C55E;
+  /* Verde lima moderno */
+  --error-color: #EF4444;
+  /* Rojo vibrante para errores */
 
   /* Tipografía */
   --font-family: 'Inter', sans-serif;
@@ -15,6 +22,8 @@
   /* Espaciados y formas */
   --padding-base: 1rem;
   --border-radius: 0.5rem;
+
+  --max-width: 1400px;
 }
 
 body {
@@ -41,7 +50,8 @@ button {
 }
 
 button:hover {
-  background-color: #4338CA; /* Un poco más oscuro que el primary */
+  background-color: var(--hover-color);
+  /* Un poco más oscuro que el primary */
 }
 
 
@@ -60,7 +70,7 @@ button:hover {
   margin-bottom: 3rem;
   border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .slider-image {
@@ -91,7 +101,7 @@ button:hover {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   border: none;
   color: white;
   font-size: 1.5rem;
@@ -130,7 +140,7 @@ button:hover {
   background-color: white;
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .pack-price {
@@ -179,7 +189,7 @@ button:hover {
   background-color: white;
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .testimonials h2 {
@@ -193,4 +203,246 @@ button:hover {
   border-left: 4px solid var(--primary-color);
   padding-left: 1rem;
   color: var(--dark-color);
+}
+
+.content-container {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  position: relative;
+}
+
+.content-container > div,
+.content-container > section,
+.content-container > article,
+.content-container > main {
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 1em;
+
+}
+
+.main-logo {
+  max-width: 30vw;
+  width: 220px;
+  height: auto;
+
+}
+
+header.header {
+  background-color: var(--dark-color);
+  position: relative;
+  min-height: 60px;
+  padding: 1em ;
+  display: flex;
+  justify-content: center;
+  
+
+}
+
+header.header a{
+  color: var(--light-color);
+  text-decoration: none;
+}
+
+header.header a:hover{
+  color: var(--primary-color);
+}
+
+
+
+header.header .wrapper {
+  max-width: var(--max-width);
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: auto;
+}
+
+
+header.header .wrapper nav {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding-left: 3em;
+  gap: 1em;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+main{
+  min-height: 75vh;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Haz que .content-container crezca */
+.content-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* ocupa todo el espacio disponible */
+  justify-content: flex-start;
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+/* El main crece y empuja el footer hacia abajo */
+main {
+  flex: 1;
+}
+
+/* Footer normal */
+footer.footer {
+  background-color: var(--dark-color);
+  color: white;
+  text-align: center;
+}
+
+
+
+header.header nav a {
+  color: var(--light-color); /* Texto claro */
+  text-decoration: none; /* Sin subrayado */
+  font-weight: 400; /* Peso medio */
+  padding: 0.5rem 1rem; /* Espaciado interno */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transiciones suaves */
+  line-height: 1.5;
+}
+
+/* Enlace activo o al pasar el mouse */
+
+header.header nav a:hover {
+  color: var(--primary-color); /* Texto oscuro */
+  border-radius: 0;
+  border-bottom: 1px solid var(--primary-color); /* Subrayado */
+}
+
+/* Estilo para el enlace "Login" */
+
+header.header nav a.primary-link {
+  background-color: var(--primary-color); /* Fondo amarillo */
+  color: var(--dark-color); /* Texto oscuro */
+  font-weight: bold; /* Texto más destacado */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+
+}
+
+/* Hover para el enlace "Login" */
+
+header.header nav a.primary-link:hover {
+  background-color: var(--hover-color); /* Fondo más oscuro */
+  color: var(--light-color); /* Texto claro */
+}
+
+/* Estilo para el enlace "Register" */
+
+header.header nav a.secondary-link {
+  background-color: transparent; /* Fondo transparente */
+  color: var(--primary-color); /* Texto amarillo */
+  border: 2px solid var(--primary-color); /* Borde amarillo */
+  font-weight: bold; /* Texto más destacado */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+
+}
+
+/* Hover para el enlace "Register" */
+
+header.header nav a.secondary-link:hover {
+  background-color: var(--primary-color); /* Fondo amarillo */
+  color: var(--dark-color); /* Texto oscuro */
+}
+
+/* Estilo general del formulario */
+#login-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--gray-color); /* Borde gris medio */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  background-color: var(--light-color); /* Fondo claro */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estilo para los grupos de formulario */
+#login-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo para las etiquetas */
+#login-form .form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--dark-color); /* Texto oscuro */
+}
+
+/* Estilo para los campos de entrada */
+#login-form .form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-color); /* Borde gris medio */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  font-size: 1rem;
+  background-color: var(--light-color); /* Fondo blanco */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+/* Efecto al enfocar los campos de entrada */
+#login-form .form-control:focus {
+  border-color: var(--primary-color); /* Borde amarillo */
+  box-shadow: 0 0 4px rgba(255, 214, 10, 0.5); /* Sombra amarilla */
+  outline: none; /* Elimina el borde predeterminado */
+}
+
+/* Estilo para el texto de ayuda */
+#login-form .form-text {
+  font-size: 0.875rem;
+  color: var(--gray-color); /* Texto gris medio */
+  margin-top: 0.25rem;
+}
+
+/* Estilo para el botón */
+#login-form .btn {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--light-color); /* Texto blanco */
+  background-color: var(--primary-color); /* Fondo amarillo */
+  border: none;
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+#login-form .btn:hover {
+  background-color: var(--hover-color); /* Fondo amarillo más oscuro */
+  transform: scale(1.02); /* Ligero aumento de tamaño */
+}
+
+/* Efecto al hacer clic en el botón */
+#login-form .btn:active {
+  background-color: var(--dark-color); /* Fondo oscuro */
+  transform: scale(0.98); /* Ligera reducción de tamaño */
 }

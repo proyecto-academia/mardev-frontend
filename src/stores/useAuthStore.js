@@ -4,9 +4,10 @@ export const useAuthStore = create((set) => ({
   user: null,
   token: localStorage.getItem('token') || null,
 
-  save: (userData, token) => {
+  save: (user, token) => {
     localStorage.setItem('token', token);
-    set({ user: userData, token });
+    localStorage.setItem('user', JSON.stringify(user));
+    set({ user: user, token });
   },
 
   clear: () => {
@@ -24,5 +25,5 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-  isAuthenticated: () => !!localStorage.getItem('token'),
+  isAuthenticated: () => !!localStorage.getItem('token') && !!localStorage.getItem('user'), // Check if token and user exist in local storage
 }));

@@ -1,19 +1,17 @@
 import { Outlet } from 'react-router-dom'
 import HeaderPrivate from '../components/layout/HeaderPrivate'
-import Sidebar from '../components/layout/Sidebar'
 import Notifications from '../components/layout/Notifications'
+import Footer from '../components/layout/Footer'
 
 export default function PrivateLayout() {
   return (
-    <div className="min-h-screen flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <div className="content-container">
         <HeaderPrivate />
         <Notifications />
-        <main className="flex-1 p-6 overflow-auto">
+        <main>
           <Outlet />
         </main>
+        <Footer />
       </div>
-    </div>
   )
 }

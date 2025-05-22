@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom'
+import Logo from '../common/Logo'
 
 export default function HeaderPublic() {
   return (
-    <header className="bg-blue-600 text-white shadow">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold">
-          MarDev Academy
-        </Link>
-        <nav className="space-x-4">
-          <Link to="/login" className="hover:underline">
+    <header className="public-header header">
+      <div className="wrapper">
+        <Logo />
+        <nav className="">
+          <Link to="/courses" className="">
+            Courses
+          </Link>
+          <Link to="/login" className="primary-link">
             Login
           </Link>
-          <Link to="/register" className="hover:underline">
+          <Link to="/register" className="secondary-link">
             Register
           </Link>
         </nav>

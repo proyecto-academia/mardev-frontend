@@ -52,8 +52,7 @@ export default function Home() {
   };
 
   return (
-    <main style={{ padding: "2rem", fontFamily: "var(--font-family)" }}>
-      {/* Slider */}
+      <>
       <section style={{ position: "relative", marginBottom: "3rem", borderRadius: "var(--border-radius)", overflow: "hidden" }}>
         <img
           src={slides[currentSlide].image}
@@ -149,6 +148,6 @@ export default function Home() {
           </blockquote>
         ))}
       </section>
-    </main>
+      </>
   );
 }

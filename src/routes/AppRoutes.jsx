@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { useAuthStore } from '../stores/useAuthStore'
+// import { useAuthStore } from '../stores/useAuthStore'
 import PublicLayout from '../layouts/PublicLayout'
 import PrivateLayout from '../layouts/PrivateLayout'
 
@@ -16,7 +16,7 @@ import ClassDetail from '../pages/classes/ClassDetail'
 import PrivateRoute from './PrivateRoutes'
 
 export default function AppRoutes() {
-  const user = useAuthStore((state) => state.user)
+  // const user = useAuthStore((state) => state.user)
 
   return (
     <Router>
@@ -24,12 +24,8 @@ export default function AppRoutes() {
         {/* Rutas públicas */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          {!user && (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </>
-          )}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
 
         {/* Rutas privadas */}

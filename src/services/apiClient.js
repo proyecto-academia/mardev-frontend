@@ -4,7 +4,7 @@ import {useAuthStore} from '../stores/useAuthStore';
 import { useNotificationStore } from '../stores/useNotificationStore';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://mardev.es/api',
+  baseURL: import.meta.env.VITE_PROD_API_URL || import.meta.env.VITE_DEV_API_URL || 'https://mardev.es/api',
   headers: {
     'Content-Type': 'application/json',
   },
