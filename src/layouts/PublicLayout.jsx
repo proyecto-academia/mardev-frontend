@@ -7,7 +7,6 @@ export default function PublicLayout() {
   return (
       <div className="content-container">
         <HeaderPublic />
-        <Notifications />
         <main>
           <Outlet />
         </main>

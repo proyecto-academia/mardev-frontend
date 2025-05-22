@@ -1,5 +1,6 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCourseStore } from "../stores/useCourseStore";
+import Hero from "../components/common/Hero";
 
 const packs = [
   {
@@ -52,6 +53,7 @@ export default function Home() {
 
   return (
     <>
+      <Hero />
       <section id="latest-courses-section" className="section">
         <h2 className="section-title">Últimos Cursos</h2>
         <div className="courses-container">
