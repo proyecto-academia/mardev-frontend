@@ -485,9 +485,7 @@ footer.footer .last {
 .section {
   margin-bottom: 3rem;
   background-color: var(--light-color);
-  padding: 1.5rem;
   border-radius: var(--border-radius);
-  border: 1px solid var(--dark-color);
 }
 
 .section-title {
@@ -570,9 +568,7 @@ footer.footer .last {
 #testimonials-section {
   margin-bottom: 3rem;
   background-color: var(--light-color);
-  padding: 1.5rem;
   border-radius: var(--border-radius);
-  border: 1px solid var(--dark-color);
 }
 
 #testimonials-section .section-title {
@@ -599,6 +595,7 @@ footer.footer .last {
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid var(--dark-color);
 }
 
 /* Avatar del testimonio */
@@ -633,9 +630,7 @@ footer.footer .last {
 #latest-courses-section {
   margin-bottom: 3rem;
   background-color: var(--light-color);
-  padding: 1.5rem;
   border-radius: var(--border-radius);
-  border: 1px solid var(--dark-color);
 }
 
 #latest-courses-section .section-title {
@@ -700,4 +695,38 @@ footer.footer .last {
 .btn-secondary:hover {
   background-color: var(--hover-color);
   transform: scale(1.05);
+}
+
+.notifications{
+  position: sticky;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  max-width: var(--max-width);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notifications  .notification{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--light-color);
+  border: 1px solid var(--dark-color);
+  border-radius: var(--border-radius);
+}
+
+.notifications  .notification.error{
+  border-color: var(--error-color);
+}
+
+.notifications  .notification.success{
+  border-color: var(--success-color);
+}
+.notifications  .notification.warning{
+  border-color: var(--primary-color);
+}
+.notifications  .notification.info{
+  border-color: var(--gray-color);
 }
