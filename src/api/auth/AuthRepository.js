@@ -1,4 +1,4 @@
-import apiClient from '../services/apiClient';
+import apiClient from '../../services/apiClient';
 
 class AuthRepository {
   // Realiza una petición de login

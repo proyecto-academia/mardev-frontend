@@ -1,6 +1,6 @@
 // src/services/apiClient.js
 import axios from 'axios';
-import useAuthStore from '../stores/authStore';
+import {useAuthStore} from '../stores/useAuthStore';
 import { useNotificationStore } from '../stores/useNotificationStore';
 
 const apiClient = axios.create({

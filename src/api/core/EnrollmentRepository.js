@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from '../../services/apiClient';
 
 const EnrollmentRepository = {
   createEnrollment: (data) => apiClient.post('/enrollments', data),
