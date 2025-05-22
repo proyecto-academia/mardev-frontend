@@ -1,6 +1,7 @@
 import { useAuthStore } from "../../stores/useAuthStore";
 import AuthRepository from "../../api/auth/AuthRepository";
 import { useNotificationStore } from "../../stores/useNotificationStore";
+import { Link } from "react-router-dom";
 
 export default function LoginForm() {
   const authStore = useAuthStore();
@@ -29,6 +30,7 @@ export default function LoginForm() {
   return (
     <>
       <form id="login-form" onSubmit={handleSubmit}>
+        <h1>Login form</h1>
         <div className="form-group">
           <label htmlFor="email-input" className="form-label">
             Email Address
@@ -62,6 +64,14 @@ export default function LoginForm() {
         <button id="submit-button" type="submit" className="btn btn-primary">
           Login
         </button>
+        <div className="form-group">
+          <p>
+           
+            <Link to="/register" className="secondary-link" >
+            Don't have an account?
+            </Link>
+          </p>
+        </div>
       </form>
     </>
   );

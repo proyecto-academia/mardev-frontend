@@ -1,7 +1,7 @@
 :root {
   /* Colores base */
-  --primary-color: #FFD60A;
-  --hover-color: #FBBF24;
+  --primary-color: #FBBF24;
+  --hover-color: #c5951b;
   /* Amarillo más oscuro para hover */
   --dark-color: #0a0f18;
   /* Gris muy oscuro (casi negro), fondo base */
@@ -140,7 +140,7 @@ button:hover {
   background-color: white;
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--dark-color);
 }
 
 .pack-price {
@@ -189,7 +189,7 @@ button:hover {
   background-color: white;
   padding: 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--dark-color);
 }
 
 .testimonials h2 {
@@ -438,11 +438,266 @@ header.header nav a.secondary-link:hover {
 /* Efecto al pasar el mouse sobre el botón */
 #login-form .btn:hover {
   background-color: var(--hover-color); /* Fondo amarillo más oscuro */
-  transform: scale(1.02); /* Ligero aumento de tamaño */
 }
 
 /* Efecto al hacer clic en el botón */
 #login-form .btn:active {
   background-color: var(--dark-color); /* Fondo oscuro */
-  transform: scale(0.98); /* Ligera reducción de tamaño */
+}
+
+
+footer.footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+footer.footer .footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+footer.footer .footer-links a {
+  color: var(--light-color);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+footer.footer .footer-links a:hover {
+  color: var(--primary-color);
+}
+
+footer.footer .last {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--gray-color);
+}
+
+
+/* General styles for sections */
+.section {
+  margin-bottom: 3rem;
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--dark-color);
+}
+
+.section-title {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Packs section styles */
+.packs-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pack-card {
+  flex: 1 1 250px;
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--dark-color);
+  text-align: center;
+}
+
+
+.pack-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.pack-description {
+  margin-bottom: 0.5rem;
+  color: var(--gray-color);
+}
+
+.pack-price {
+  font-weight: bold;
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--hover-color);
+}
+
+.packs-container .pack-card:last-child {
+  background-color: var(--primary-color); /* Fondo amarillo */
+  color: var(--dark-color); /* Texto blanco */
+}
+
+.packs-container .pack-card:last-child  .pack-description {
+  color: var(--dark-color); /* Texto oscuro */
+}
+
+.packs-container .pack-card:last-child .btn-primary{
+  background-color: var(--dark-color); /* Fondo oscuro */
+  color: var(--light-color); /* Texto claro */
+  border: 2px solid var(--primary-color); /* Borde claro */
+}
+
+.packs-container .pack-card:last-child .btn-primary:hover{
+  background-color: transparent; /* Fondo más oscuro */
+  color: var(--dark-color); /* Texto claro */
+  border: 2px solid var(--dark-color); /* Borde oscuro */
+}
+
+
+/* Testimonios - Sección */
+#testimonials-section {
+  margin-bottom: 3rem;
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--dark-color);
+}
+
+#testimonials-section .section-title {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Contenedor de testimonios con Grid */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automáticamente las columnas */
+  gap: 1.5rem; /* Espaciado entre las tarjetas */
+}
+
+/* Tarjeta de testimonio */
+.testimonial-card {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Avatar del testimonio */
+.testimonial-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Comentario del testimonio */
+.testimonial-comment {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: var(--gray-color);
+}
+
+/* Nombre del testimonio */
+.testimonial-name {
+  font-weight: bold;
+  color: var(--dark-color);
+}
+
+/* Últimos Cursos - Sección */
+#latest-courses-section {
+  margin-bottom: 3rem;
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--dark-color);
+}
+
+#latest-courses-section .section-title {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Contenedor de cursos */
+.courses-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automáticamente las columnas */
+  gap: 1.5rem; /* Espaciado entre las tarjetas */
+}
+
+/* Tarjeta de curso */
+.course-card {
+  background-color: var(--light-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--gray-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Título del curso */
+.course-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--dark-color);
+}
+
+/* Descripción del curso */
+.course-description {
+  margin-bottom: 0.5rem;
+  color: var(--gray-color);
+}
+
+/* Precio del curso */
+.course-price {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Botón del curso */
+.btn-secondary {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.05);
 }
