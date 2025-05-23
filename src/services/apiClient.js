@@ -31,6 +31,9 @@ apiClient.interceptors.response.use(
     if (error.response) {
       // Errores de respuesta del servidor (códigos 4xx o 5xx)
       const message = error.response.data.message || 'Ocurrió un error en el servidor.';
+      if(message === 'File not found in database'){
+        return Promise.reject(error);
+      }
       console.error(`[API ERROR] ${error.response.status}: ${message}`);
       notificationStore.addNotification({ type: 'error', message });
     } else if (error.request) {

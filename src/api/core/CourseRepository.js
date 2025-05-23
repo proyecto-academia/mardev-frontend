@@ -1,4 +1,5 @@
 import apiClient from '../../services/apiClient';
+import MediaRepository from '../media/MediaRepository';
 
 class CourseRepository {
   constructor() {

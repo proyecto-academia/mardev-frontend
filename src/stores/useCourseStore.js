@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import CourseRepository from '../api/core/CourseRepository';
 import { useNotificationStore } from './useNotificationStore';
+import MediaRepository from '../api/media/MediaRepository';
 
 export const useCourseStore = create((set) => ({
   courses: [],
@@ -30,6 +31,10 @@ export const useCourseStore = create((set) => ({
     try {
       const response = await CourseRepository.getLatestCourses();
       console.log('Latest courses:', response); // Log the latest courses
+      response.forEach(async(course) => {
+        course.photo = await MediaRepository.getUrlSingleObject('courses', course.id, 'photo');
+      });
+
       set({ courses: response});
     } catch (error) {
       const notificationStore = useNotificationStore.getState();
