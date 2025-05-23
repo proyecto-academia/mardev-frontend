@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
-import HeaderPublic from "../components/layout/HeaderPublic";
+import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Notifications from "../components/layout/Notifications";
 
 export default function PublicLayout() {
   return (
       <div className="content-container">
-        <HeaderPublic />
+        <Header />
         <main>
           <Outlet />
         </main>

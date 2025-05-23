@@ -3,27 +3,18 @@ import { useLatestCourses } from "../hooks/useFetchLatestCourses";
 import { useFetchPacks } from "../hooks/useFetchPacks";
 import LatestsCoursesList from "../components/lists/LatestsCoursesList";
 import TestimonialsList from "../components/lists/TestimonialsList";
-import { useAuthStore } from "../stores/useAuthStore";
 
 export default function Home() {
   const latestCourses = useLatestCourses();
   const packs = useFetchPacks();
-  const isAuthenticated = useAuthStore().isAuthenticated();
 
   return (
     <>
       <Hero />
       <section id="latest-courses-section" className="section">
         <h2 className="section-title">Últimos Cursos</h2>
-        {!isAuthenticated ? (
-          <div className="alert alert-warning">
-            <p>Para acceder a los cursos, por favor inicia sesión.</p>
-            <a href="/login" className="btn btn-primary">Iniciar Sesión</a>
-          </div>
-        ) : (
-          <LatestsCoursesList courses={latestCourses} />
-        )}
-       
+
+        <LatestsCoursesList courses={latestCourses} />
       </section>
 
       <section id="packs-section" className="section">
@@ -37,7 +28,9 @@ export default function Home() {
               <h3 className="pack-title">{pack.name}</h3>
               <p className="pack-description">{pack.description}</p>
               <p className="pack-price">{`$${pack.price}`}</p>
-              <button className="btn btn-primary">{pack.is_free? "Try now" : "Buy"}</button>
+              <button className="btn btn-primary">
+                {pack.is_free ? "Try now" : "Buy"}
+              </button>
             </div>
           ))}
         </div>
