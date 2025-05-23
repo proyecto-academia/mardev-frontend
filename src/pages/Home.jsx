@@ -3,16 +3,27 @@ import { useLatestCourses } from "../hooks/useFetchLatestCourses";
 import { useFetchPacks } from "../hooks/useFetchPacks";
 import LatestsCoursesList from "../components/lists/LatestsCoursesList";
 import TestimonialsList from "../components/lists/TestimonialsList";
+import { useAuthStore } from "../stores/useAuthStore";
+
 export default function Home() {
   const latestCourses = useLatestCourses();
   const packs = useFetchPacks();
+  const isAuthenticated = useAuthStore().isAuthenticated();
 
   return (
     <>
       <Hero />
       <section id="latest-courses-section" className="section">
         <h2 className="section-title">Últimos Cursos</h2>
-        <LatestsCoursesList courses={latestCourses} />
+        {!isAuthenticated ? (
+          <div className="alert alert-warning">
+            <p>Para acceder a los cursos, por favor inicia sesión.</p>
+            <a href="/login" className="btn btn-primary">Iniciar Sesión</a>
+          </div>
+        ) : (
+          <LatestsCoursesList courses={latestCourses} />
+        )}
+       
       </section>
 
       <section id="packs-section" className="section">

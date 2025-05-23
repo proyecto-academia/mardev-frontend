@@ -401,7 +401,9 @@ header.header nav a.secondary-link:hover {
 
 /* Estilo para los campos de entrada */
 #login-form .form-control {
-  width: 100%;
+  width: fill-available;
+  width: -webkit-fill-available;
+  width: -moz-available;
   padding: 0.75rem;
   border: 1px solid var(--gray-color); /* Borde gris medio */
   border-radius: var(--border-radius); /* Bordes redondeados */
@@ -933,3 +935,87 @@ footer.footer .last {
   margin-bottom: 1rem;
 }
 
+header.header nav a.logout{
+  color: var(--error-color);
+}
+
+header.header nav a.logout:hover{
+  border-color: var(--error-color);
+}
+
+
+/* Estilo general del formulario */
+#register-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--gray-color); /* Borde gris medio */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  background-color: var(--light-color); /* Fondo claro */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estilo para los grupos de formulario */
+#register-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo para las etiquetas */
+#register-form .form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--dark-color); /* Texto oscuro */
+}
+
+/* Estilo para los campos de entrada */
+#register-form .form-control {
+  width: fill-available;
+  width: -webkit-fill-available;
+  width: -moz-available;
+  padding: 0.75rem;
+  border: 1px solid var(--gray-color); /* Borde gris medio */
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  font-size: 1rem;
+  background-color: var(--light-color); /* Fondo blanco */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+/* Efecto al enfocar los campos de entrada */
+#register-form .form-control:focus {
+  border-color: var(--primary-color); /* Borde amarillo */
+  box-shadow: 0 0 4px rgba(255, 214, 10, 0.5); /* Sombra amarilla */
+  outline: none; /* Elimina el borde predeterminado */
+}
+
+/* Estilo para el texto de ayuda */
+#register-form .form-text {
+  font-size: 0.875rem;
+  color: var(--gray-color); /* Texto gris medio */
+  margin-top: 0.25rem;
+}
+
+/* Estilo para el botón */
+#register-form .btn {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--light-color); /* Texto blanco */
+  background-color: var(--primary-color); /* Fondo amarillo */
+  border: none;
+  border-radius: var(--border-radius); /* Bordes redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transiciones suaves */
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+#register-form .btn:hover {
+  background-color: var(--hover-color); /* Fondo amarillo más oscuro */
+}
+
+/* Efecto al hacer clic en el botón */
+#register-form .btn:active {
+  background-color: var(--dark-color); /* Fondo oscuro */
+}

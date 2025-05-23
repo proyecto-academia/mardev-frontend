@@ -2,9 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '../stores/useAuthStore'
 
 export default function PrivateRoute() {
-  const token = useAuthStore((state) => state.token)
+  const isAuthenticated = useAuthStore().isAuthenticated();
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
 
