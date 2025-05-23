@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
-import { useCourseStore } from "../stores/useCourseStore";
 import Hero from "../components/common/Hero";
+import { useLatestCourses } from "../hooks/useFetchLatestCourses";
+import { useFetchPacks } from "../hooks/useFetchPacks";
 
-const packs = [
-  {
-    id: 1,
-    name: "Pack Básico",
-    description: "5 cursos básicos para empezar",
-    price: 49,
-  },
-  {
-    id: 2,
-    name: "Pack Profesional",
-    description: "10 cursos avanzados + proyectos",
-    price: 99,
-  },
-  {
-    id: 3,
-    name: "Pack Completo",
-    description: "Todos los cursos + mentorías",
-    price: 149,
-  },
-];
+// const packs = [
+//   {
+//     id: 1,
+//     name: "Pack Básico",
+//     description: "5 cursos básicos para empezar",
+//     price: 49,
+//   },
+//   {
+//     id: 2,
+//     name: "Pack Profesional",
+//     description: "10 cursos avanzados + proyectos",
+//     price: 99,
+//   },
+//   {
+//     id: 3,
+//     name: "Pack Completo",
+//     description: "Todos los cursos + mentorías",
+//     price: 149,
+//   },
+// ];
 
 const testimonials = [
   {
@@ -42,14 +42,8 @@ const testimonials = [
 ];
 
 export default function Home() {
-  const { fetchLatestCourses } = useCourseStore();
-  const [latestCourses, setLatestCourses] = useState([]);
-
-  useEffect(() => {
-    fetchLatestCourses().then(() => {
-      setLatestCourses(useCourseStore.getState().courses);
-    });
-  }, [fetchLatestCourses]);
+  const latestCourses = useLatestCourses();
+  const packs = useFetchPacks();
 
   return (
     <>
@@ -74,11 +68,14 @@ export default function Home() {
         <h2 className="section-title">Packs Disponibles</h2>
         <div className="packs-container">
           {packs.map((pack) => (
-            <div key={pack.id} className="pack-card">
+            <div
+              key={pack.id}
+              className={`pack-card ${pack.is_free ? "pack-free" : ""}`}
+            >
               <h3 className="pack-title">{pack.name}</h3>
               <p className="pack-description">{pack.description}</p>
               <p className="pack-price">{`$${pack.price}`}</p>
-              <button className="btn btn-primary">Comprar</button>
+              <button className="btn btn-primary">{pack.is_free? "Try now" : "Buy"}</button>
             </div>
           ))}
         </div>

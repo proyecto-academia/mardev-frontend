@@ -515,6 +515,39 @@ footer.footer .last {
   text-align: center;
 }
 
+.pack-card.pack-free{
+  border: none;
+}
+
+.pack-card.pack-free .btn-primary{
+  background-color: transparent;
+  color: var(--dark-color); /* Texto oscuro */
+  border: 2px solid var(--dark-color); /* Borde oscuro */
+}
+
+.packs-container .pack-card:last-child {
+  background-color: var(--primary-color); /* Fondo amarillo */
+  color: var(--dark-color); /* Texto blanco */
+}
+
+.packs-container .pack-card:last-child  .pack-description {
+  color: var(--dark-color); /* Texto oscuro */
+}
+
+.packs-container .pack-card:last-child .btn-primary{
+  background-color: var(--dark-color); /* Fondo oscuro */
+  color: var(--light-color); /* Texto claro */
+  border: 2px solid var(--primary-color); /* Borde claro */
+}
+
+.packs-container .pack-card:last-child .btn-primary:hover{
+  background-color: transparent; /* Fondo más oscuro */
+  color: var(--dark-color); /* Texto claro */
+  border: 2px solid var(--dark-color); /* Borde oscuro */
+}
+
+
+
 
 .pack-title {
   font-size: 1.25rem;
@@ -544,27 +577,6 @@ footer.footer .last {
 
 .btn-primary:hover {
   background-color: var(--hover-color);
-}
-
-.packs-container .pack-card:last-child {
-  background-color: var(--primary-color); /* Fondo amarillo */
-  color: var(--dark-color); /* Texto blanco */
-}
-
-.packs-container .pack-card:last-child  .pack-description {
-  color: var(--dark-color); /* Texto oscuro */
-}
-
-.packs-container .pack-card:last-child .btn-primary{
-  background-color: var(--dark-color); /* Fondo oscuro */
-  color: var(--light-color); /* Texto claro */
-  border: 2px solid var(--primary-color); /* Borde claro */
-}
-
-.packs-container .pack-card:last-child .btn-primary:hover{
-  background-color: transparent; /* Fondo más oscuro */
-  color: var(--dark-color); /* Texto claro */
-  border: 2px solid var(--dark-color); /* Borde oscuro */
 }
 
 
