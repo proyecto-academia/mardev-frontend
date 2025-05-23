@@ -22,15 +22,15 @@ class MediaRepository {
         }
     }
 
-    async getUrlMultipleObjects(path, ids){
+    async getUrlMultipleObjects(object, media, ids){
         try {
             if(!Array.isArray(ids) || ids.length === 0) {
                 throw new Error('IDs must be a non-empty array');
             }
-            const response = await apiClient.get(`${this.prefix}/${path}/multiple`, { params: { ids } });
+            const response = await apiClient.post(`${this.prefix}/${object}/${media}`, { ids });
             return response.data.data;
         } catch (error) {
-            console.error(`[GET ${path} ERROR]: ${error.response?.data?.message || error.message}`);
+            console.error(`[GET ${object} ERROR]: ${error.response?.data?.message || error.message}`);
             throw error;
         }
     }
