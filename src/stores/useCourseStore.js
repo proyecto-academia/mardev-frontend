@@ -8,23 +8,26 @@ export const useCourseStore = create((set) => ({
   pagination: {},
   loading: false,
 
-  fetchCourses: async () => {
+  fetchCourses: async (params = {}) => {
     set({ loading: true });
     try {
-      const response = await CourseRepository.getCourses();
-      set({ courses: response.data.courses, pagination: response.data.pagination });
+      const response = await CourseRepository.getCourses(params);
+      console.log('Courses:', response); // Log the courses
+      set({
+        courses: response.courses.data,
+        pagination: response.pagination,
+      });
     } catch (error) {
       const notificationStore = useNotificationStore.getState();
       notificationStore.addNotification({
-        type: 'error',
-        message: 'Error al cargar los cursos. Por favor, inténtalo de nuevo.',
+        type: "error",
+        message: "Error al cargar los cursos. Por favor, inténtalo de nuevo.",
       });
-      console.error('Error loading courses:', error);
+      console.error("Error loading courses:", error);
     } finally {
       set({ loading: false });
     }
   },
-
 
   fetchLatestCourses: async () => {
     set({ loading: true });

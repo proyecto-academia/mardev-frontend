@@ -6,12 +6,14 @@ class CourseRepository {
     this.prefix = import.meta.env.VITE_PROD_CORE_PREFIX || import.meta.env.VITE_DEV_CORE_PREFIX || '';
   }
 
-  async getCourses() {
+  async getCourses(params = {}) {
     try {
-      const response = await apiClient.get(`${this.prefix}/courses`);
+      const response = await apiClient.get(`${this.prefix}/courses`, {
+        params,
+      });
       return response.data.data;
     } catch (error) {
-      console.error('[GET COURSES ERROR]:', error.response?.data?.message || error.message);
+      console.error("[GET COURSES ERROR]:", error.response?.data?.message || error.message);
       throw error;
     }
   }
