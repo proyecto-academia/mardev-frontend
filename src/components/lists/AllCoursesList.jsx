@@ -9,16 +9,37 @@ const MIN = 0;
 const MAX = 1000;
 
 export default function AllCoursesList() {
-  const { fetchCourses, courses, pagination, loading, minPrice, maxPrice } = useCourseStore();
+  const {
+    fetchCourses,
+    courses,
+    pagination,
+    loading,
+    minPrice,
+    maxPrice,
+    loadPriceBounds,
+  } = useCourseStore();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState({ orderBy: "id", order: "asc" });
-  const [filters, setFilters] = useState({
-    minPrice: minPrice || MIN,
-    maxPrice: maxPrice || MAX, 
-  });
+  const [filters, setFilters] = useState({});
   const [priceRange, setPriceRange] = useState([MIN, MAX]);
+  const [boundsLoaded, setBoundsLoaded] = useState(false);
 
+  // Load price bounds on mount
+  useEffect(() => {
+    const loadBounds = async () => {
+      await loadPriceBounds();
+      setBoundsLoaded(true);
+    };
+    loadBounds();
+  }, [loadPriceBounds]);
 
+  // Update priceRange when bounds are loaded
+  useEffect(() => {
+    if (boundsLoaded) {
+      setPriceRange([minPrice, maxPrice]);
+    }
+  }, [boundsLoaded, minPrice, maxPrice]);
 
   // Debounced setter for filters
   const updateFiltersDebounced = React.useMemo(
@@ -95,8 +116,8 @@ export default function AllCoursesList() {
           </label>
           <Range
             step={10}
-            min={filters.minPrice}
-            max={filters.maxPrice}
+            min={boundsLoaded ? minPrice : MIN}
+            max={boundsLoaded ? maxPrice : MAX}
             values={priceRange}
             onChange={setPriceRange}
             renderTrack={({ props, children }) => (
@@ -106,30 +127,30 @@ export default function AllCoursesList() {
                   ...props.style,
                   height: "6px",
                   width: "100%",
-                  background: `linear-gradient(to right, #ccc ${((priceRange[0] - MIN) / (MAX - MIN)) * 100}%, #0c66ee ${((priceRange[0] - MIN) / (MAX - MIN)) * 100}% ${((priceRange[1] - MIN) / (MAX - MIN)) * 100}%, #ccc ${((priceRange[1] - MIN) / (MAX - MIN)) * 100}%)`,
+                  background: `linear-gradient(to right,
+                    #ccc ${(priceRange[0] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%,
+                    #0c66ee ${(priceRange[0] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}% ${(priceRange[1] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%,
+                    #ccc ${(priceRange[1] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%)`,
                   borderRadius: "3px",
                 }}
               >
                 {children}
               </div>
             )}
-            renderThumb={({ props }) => {
-                const { key, ...rest } = props;
-                return (
-                  <div
-                    key={key}  // Pass key explicitly here
-                    {...rest}  // Spread all other props
-                    style={{
-                      ...rest.style,
-                      height: "20px",
-                      width: "20px",
-                      borderRadius: "50%",
-                      backgroundColor: "#0c66ee",
-                      boxShadow: "0px 2px 6px #aaa",
-                    }}
-                  />
-                );
-            }}
+            renderThumb={({ props, index }) => (
+              <div
+                key={index}
+                {...props}
+                style={{
+                  ...props.style,
+                  height: "20px",
+                  width: "20px",
+                  borderRadius: "50%",
+                  backgroundColor: "#0c66ee",
+                  boxShadow: "0px 2px 6px #aaa",
+                }}
+              />
+            )}
           />
         </div>
       </div>
