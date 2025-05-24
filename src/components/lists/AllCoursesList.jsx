@@ -1,29 +1,48 @@
 import React, { useState, useEffect } from "react";
 import CourseCard from "../cards/CourseCard";
 import { useCourseStore } from "../../stores/useCourseStore";
+import { Range } from "react-range";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+
+const MIN = 0;
+const MAX = 1000;
 
 export default function AllCoursesList() {
   const { fetchCourses, courses, pagination, loading } = useCourseStore();
-  const [filters, setFilters] = useState({});
-  const [order, setOrder] = useState({ orderBy: "id", order: "asc" });
   const [currentPage, setCurrentPage] = useState(1);
+  const [order, setOrder] = useState({ orderBy: "id", order: "asc" });
+  const [priceRange, setPriceRange] = useState([MIN, MAX]);
 
-  // Fetch courses when filters, order, or page changes
+  const [filters, setFilters] = useState({
+    minPrice: MIN,
+    maxPrice: MAX,
+  });
+
+  // Actualiza los filtros cuando cambia el slider
+  useEffect(() => {
+    setFilters({ minPrice: priceRange[0], maxPrice: priceRange[1] });
+  }, [priceRange]);
+
+  // Obtiene cursos cada vez que filtros, orden o página cambian
   useEffect(() => {
     fetchCourses({ ...filters, ...order, page: currentPage });
   }, [filters, order, currentPage, fetchCourses]);
 
-  // Handlers for filtering, ordering, and pagination
   const handleFilter = (field, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [field]: value,
     }));
-    setCurrentPage(1); // Reset to the first page after filtering
+    setCurrentPage(1);
   };
 
   const handleOrderBy = (orderBy, orderDirection) => {
     setOrder({ orderBy, order: orderDirection });
+  };
+
+  const toggleOrderDirection = () => {
+    const newOrder = order.order === "asc" ? "desc" : "asc";
+    handleOrderBy(order.orderBy, newOrder);
   };
 
   const handleNextPage = () => {
@@ -52,24 +71,54 @@ export default function AllCoursesList() {
           <option value="1">Free</option>
           <option value="0">Paid</option>
         </select>
-        <input
-          type="number"
-          placeholder="Min Price"
-          onChange={(e) => handleFilter("minPrice", e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Max Price"
-          onChange={(e) => handleFilter("maxPrice", e.target.value)}
-        />
+
+        {/* Slider de rango de precios */}
+        <div style={{ margin: "2rem 0", padding: "0 1rem" }}>
+          <label>
+            Price Range: ${priceRange[0]} - ${priceRange[1]}
+          </label>
+          <Range
+            step={10}
+            min={MIN}
+            max={MAX}
+            values={priceRange}
+            onChange={setPriceRange}
+            renderTrack={({ props, children }) => (
+              <div
+                {...props}
+                style={{
+                  ...props.style,
+                  height: "6px",
+                  width: "100%",
+                  background: `linear-gradient(to right, #ccc ${((priceRange[0] - MIN) / (MAX - MIN)) * 100}%, #0c66ee ${((priceRange[0] - MIN) / (MAX - MIN)) * 100}% ${((priceRange[1] - MIN) / (MAX - MIN)) * 100}%, #ccc ${((priceRange[1] - MIN) / (MAX - MIN)) * 100}%)`,
+                  borderRadius: "3px",
+                }}
+              >
+                {children}
+              </div>
+            )}
+            renderThumb={({ props }) => (
+              <div
+                {...props}
+                style={{
+                  ...props.style,
+                  height: "20px",
+                  width: "20px",
+                  borderRadius: "50%",
+                  backgroundColor: "#0c66ee",
+                  boxShadow: "0px 2px 6px #aaa",
+                }}
+              />
+            )}
+          />
+        </div>
       </div>
 
-      {/* Order By */}
-      <div className="order-by">
+      {/* Ordenar */}
+      <div className="order-by" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
         <select
-          onChange={(e) =>
-            handleOrderBy(e.target.value, order.order === "asc" ? "desc" : "asc")
-          }
+          value={order.orderBy}
+          onChange={(e) => handleOrderBy(e.target.value, order.order)}
         >
           <option value="id">Default</option>
           <option value="name">Name</option>
@@ -77,6 +126,9 @@ export default function AllCoursesList() {
           <option value="published">Published</option>
           <option value="estimated_hours">Estimated Hours</option>
         </select>
+        <button onClick={toggleOrderDirection} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--dark-color)" }}>
+          {order.order === "asc" ? <FaArrowUp size={20} /> : <FaArrowDown size={20} />}
+        </button>
       </div>
 
       {/* Course Cards */}
