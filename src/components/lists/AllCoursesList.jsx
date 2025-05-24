@@ -3,6 +3,7 @@ import CourseCard from "../cards/CourseCard";
 import { useCourseStore } from "../../stores/useCourseStore";
 import { Range } from "react-range";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { debounce } from "lodash";
 
 const MIN = 0;
 const MAX = 1000;
@@ -18,12 +19,26 @@ export default function AllCoursesList() {
     maxPrice: MAX,
   });
 
-  // Actualiza los filtros cuando cambia el slider
-  useEffect(() => {
-    setFilters({ minPrice: priceRange[0], maxPrice: priceRange[1] });
-  }, [priceRange]);
+  // Debounced setter for filters
+  const updateFiltersDebounced = React.useMemo(
+    () =>
+      debounce((newRange) => {
+        setFilters({ minPrice: newRange[0], maxPrice: newRange[1] });
+      }, 500),
+    []
+  );
 
-  // Obtiene cursos cada vez que filtros, orden o página cambian
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => updateFiltersDebounced.cancel();
+  }, [updateFiltersDebounced]);
+
+  // Update filters when priceRange changes, using debounce
+  useEffect(() => {
+    updateFiltersDebounced(priceRange);
+  }, [priceRange, updateFiltersDebounced]);
+
+  // Fetch courses when filters, order, or page changes
   useEffect(() => {
     fetchCourses({ ...filters, ...order, page: currentPage });
   }, [filters, order, currentPage, fetchCourses]);
@@ -33,7 +48,7 @@ export default function AllCoursesList() {
       ...prevFilters,
       [field]: value,
     }));
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to the first page after filtering
   };
 
   const handleOrderBy = (orderBy, orderDirection) => {
@@ -97,19 +112,23 @@ export default function AllCoursesList() {
                 {children}
               </div>
             )}
-            renderThumb={({ props }) => (
-              <div
-                {...props}
-                style={{
-                  ...props.style,
-                  height: "20px",
-                  width: "20px",
-                  borderRadius: "50%",
-                  backgroundColor: "#0c66ee",
-                  boxShadow: "0px 2px 6px #aaa",
-                }}
-              />
-            )}
+            renderThumb={({ props }) => {
+                const { key, ...rest } = props;
+                return (
+                  <div
+                    key={key}  // Pass key explicitly here
+                    {...rest}  // Spread all other props
+                    style={{
+                      ...rest.style,
+                      height: "20px",
+                      width: "20px",
+                      borderRadius: "50%",
+                      backgroundColor: "#0c66ee",
+                      boxShadow: "0px 2px 6px #aaa",
+                    }}
+                  />
+                );
+            }}
           />
         </div>
       </div>
