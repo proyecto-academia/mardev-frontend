@@ -9,7 +9,6 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import CourseList from '../pages/courses/CourseList'
 import CourseDetail from '../pages/courses/CourseDetail'
-import ClassList from '../pages/classes/ClassList'
 import ClassDetail from '../pages/classes/ClassDetail'
 
 // Helpers
@@ -33,7 +32,6 @@ export default function AppRoutes() {
           <Route element={<PrivateLayout />}>
             <Route path="/courses" element={<CourseList />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
-            <Route path="/classes" element={<ClassList />} />
             <Route path="/classes/:id" element={<ClassDetail />} />
           </Route>
         </Route>

@@ -19,6 +19,7 @@ const loadInitialCache = () => {
 };
 
 export const useCourseStore = create((set) => ({
+  singleCourse:null,
   courses: [],
   pagination: {},
   loading: false,
@@ -104,6 +105,45 @@ export const useCourseStore = create((set) => ({
         message: "Error al cargar los cursos. Por favor, inténtalo de nuevo.",
       });
       console.error("Error loading courses:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  fetchCourse: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await CourseRepository.getCourse(id);
+      console.log("Course:", response); // Log the course
+      const { getUrlFromStore, pushUrlToStore } = useCourseStore.getState();
+      const course = response;
+      const cachedUrl = getUrlFromStore(course.id);
+      if (cachedUrl) {
+        console.log(`Usando foto cacheada de ${course.id}`);
+        course.photo = cachedUrl;
+      } else {
+        console.log(`pido la foto de ${course.id}`);
+        const photo = await MediaRepository.getUrlSingleObject(
+          "courses",
+          course.id,
+          "photo"
+        );
+        const photoUrl = photo?.url || null;
+        if (photoUrl) {
+          course.photo = photoUrl;
+          pushUrlToStore(course.id, photoUrl);
+        }
+      }
+      set({ singleCourse: course });
+      return course;
+    } catch (error) {
+      const notificationStore = useNotificationStore.getState();
+      notificationStore.addNotification({
+        type: "error",
+        message: "Error al cargar el curso. Por favor, inténtalo de nuevo.",
+      });
+      console.error("Error loading course:", error);
+      set({ singleCourse: null });
     } finally {
       set({ loading: false });
     }

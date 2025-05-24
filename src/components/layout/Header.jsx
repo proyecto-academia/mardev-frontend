@@ -24,9 +24,9 @@ export default function Header() {
             <Link to="/profile" className="">
               Profile
             </Link>
-            <button onClick={logout} className="logout">
+            <a onClick={logout} className="logout">
               Logout
-            </button>
+            </a>
           </nav>
         </div>
       </header>

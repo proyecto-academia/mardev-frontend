@@ -15,6 +15,13 @@ export default function ClassList() {
     }
   }, [courseId, fetchClasses]);
 
+  useEffect(() => {
+    if (classes.length > 0 && !selectedClass) {
+      setSelectedClass(classes[0]);
+    }
+  }, [classes, selectedClass]);
+
+
   if (loading) {
     return <p>Loading classes...</p>;
   }
@@ -22,6 +29,7 @@ export default function ClassList() {
   const handleClassClick = (classItem) => {
     setSelectedClass(classItem); // Actualiza la clase seleccionada
   };
+
 
   return (
     <div className="class-list-container">

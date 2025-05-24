@@ -15,9 +15,9 @@ export default function ClassCard({ classItem }) {
       </div>
       <div className="class-card-body">
         <p className="class-card-description">{classItem.description}</p>
-        <p className="class-card-hours">
-          {classItem.estimated_hours} hours
-        </p>
+        <button className="btn btn-primary">
+          See Video!!
+        </button>
       </div>
     </div>
   );
