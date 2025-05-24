@@ -3,7 +3,7 @@ import ClassList from "../../components/lists/ClassList";
 
 export default function CourseDetail() {
   return (
-    <div>
+    <div className="course-detail">
       <h1>Course Detail</h1>
       <ClassList />
     </div>

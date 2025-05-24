@@ -29,32 +29,6 @@ export const useClassStore = create((set) => ({
       const response = await ClassRepository.getClasses(params);
       console.log("Classes:", response);
 
-    //   {classes: Array(3), pagination: {…}}
-    //   classes
-    //   : 
-    //   Array(3)
-    //   0
-    //   : 
-    //   {id: 26, course_id: 9, title: 'Itaque animi quia eum.', description: 'Esse a tenetur maxime accusantium natus. Consequat…Est dignissimos saepe vitae nihil fuga assumenda.', position: 1, …}
-    //   1
-    //   : 
-    //   {id: 27, course_id: 9, title: 'Labore molestias temporibus nihil quia officia.', description: 'Quaerat qui veritatis quasi id. Perspiciatis et nu…am quod sint. Est autem provident harum et culpa.', position: 2, …}
-    //   2
-    //   : 
-    //   {id: 28, course_id: 9, title: 'Aut ea ipsum sit.', description: 'Reiciendis cum est nostrum nisi. Est dolor repella… Animi reprehenderit iure fugit magni voluptatem.', position: 3, …}
-    //   length
-    //   : 
-    //   3
-    //   [[Prototype]]
-    //   : 
-    //   Array(0)
-    //   pagination
-    //   : 
-    //   {current_page: 1, per_page: 24, total: 3, next_page: null}
-    //   [[Prototype]]
-    //   : 
-    //   Object
-
       const { getUrlFromStore, pushUrlToStore } = useClassStore.getState();
 
       const classesWithMedia = await Promise.all(

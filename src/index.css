@@ -1269,3 +1269,146 @@ p::selection {
   background-color: var(--hover-color); /* Darker background on hover */
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
+
+.class-list-container {
+  display: flex;
+  gap: 20px;
+}
+
+.class-list {
+  width: 100%;
+  max-width: 400px;
+}
+
+.class-card {
+  width: 100%;
+}
+
+main .course-detail .class-list{
+  max-height: 50vh;
+}
+
+.class-image{
+  max-width: 550px;
+}
+
+.class-card-header .img-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.course-detail {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--light-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: var(--max-width);
+}
+
+.course-detail h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.class-list-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.class-list {
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: var(--light-color);
+  border: 1px solid var(--gray-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.class-li {
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.class-li:hover {
+  background-color: var(--hover-color);
+  color: var(--light-color);
+}
+
+.class-li.selected {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+  font-weight: bold;
+}
+
+.class-li .position p {
+  font-size: 0.875rem;
+  color: var(--gray-color);
+  margin: 0;
+}
+
+.class-li .class-title h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0 0;
+  color: var(--dark-color);
+}
+
+.class-card {
+  flex: 2;
+  background-color: var(--light-color);
+  border: 1px solid var(--gray-color);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.class-card-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.class-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.class-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.class-card-body {
+  text-align: left;
+}
+
+.class-card-description {
+  font-size: 1rem;
+  color: var(--gray-color);
+  margin-bottom: 1rem;
+}
+
+.class-card-hours {
+  font-size: 0.875rem;
+  font-weight: bold;
+  color: var(--dark-color);
+}
