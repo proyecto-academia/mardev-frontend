@@ -23,14 +23,39 @@ export const useCourseStore = create((set) => ({
   pagination: {},
   loading: false,
   coursesPhotosUrls: loadInitialCache(),
-  minPrice: 0, // Valor predeterminado
-  maxPrice: 1000, // Valor predeterminado
+  minPrice: null, // Valor predeterminado
+  maxPrice: null, // Valor predeterminado
 
   // Método para cargar los límites de precios desde la API
   loadPriceBounds: async () => {
     try {
+      if (localStorage.getItem("coursesPriceBounds")) {
+        const cachedBounds = JSON.parse(
+          localStorage.getItem("coursesPriceBounds")
+        );
+        const now = Date.now();
+        if (cachedBounds.timestamp > now) {
+          set({
+            minPrice: cachedBounds.minPrice,
+            maxPrice: cachedBounds.maxPrice,
+          });
+          return; // Usar los valores en caché
+        }
+        localStorage.removeItem("coursesPriceBounds"); // Limpiar si está expirado
+      }
+
       const min = await CourseRepository.getMinPrice();
       const max = await CourseRepository.getMaxPrice();
+
+      localStorage.setItem(
+        "coursesPriceBounds",
+        JSON.stringify({
+          minPrice: min?.minPrice ?? 0,
+          maxPrice: max?.maxPrice ?? 1000,
+          timestamp: Date.now() + 5 * 60 * 1000,
+        })
+      );
+
       set({
         minPrice: min?.minPrice ?? 0,
         maxPrice: max?.maxPrice ?? 1000,

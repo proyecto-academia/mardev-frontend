@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import CourseCard from "../cards/CourseCard";
 import { useCourseStore } from "../../stores/useCourseStore";
-import { Range } from "react-range";
+import MultiRangeSlider from "multi-range-slider-react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { debounce } from "lodash";
-
-const MIN = 0;
-const MAX = 1000;
 
 export default function AllCoursesList() {
   const {
@@ -22,24 +19,16 @@ export default function AllCoursesList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState({ orderBy: "id", order: "asc" });
   const [filters, setFilters] = useState({});
-  const [priceRange, setPriceRange] = useState([MIN, MAX]);
-  const [boundsLoaded, setBoundsLoaded] = useState(false);
+  const [priceRange, setPriceRange] = useState(null);
 
-  // Load price bounds on mount
   useEffect(() => {
-    const loadBounds = async () => {
-      await loadPriceBounds();
-      setBoundsLoaded(true);
-    };
-    loadBounds();
+    loadPriceBounds();
   }, [loadPriceBounds]);
 
-  // Update priceRange when bounds are loaded
   useEffect(() => {
-    if (boundsLoaded) {
-      setPriceRange([minPrice, maxPrice]);
-    }
-  }, [boundsLoaded, minPrice, maxPrice]);
+    if (minPrice === null || maxPrice === null) return;
+    setPriceRange([Number(minPrice), Number(maxPrice)]);
+  }, [minPrice, maxPrice]);
 
   // Debounced setter for filters
   const updateFiltersDebounced = React.useMemo(
@@ -50,17 +39,16 @@ export default function AllCoursesList() {
     []
   );
 
-  // Cleanup debounce on unmount
   useEffect(() => {
     return () => updateFiltersDebounced.cancel();
   }, [updateFiltersDebounced]);
 
-  // Update filters when priceRange changes, using debounce
   useEffect(() => {
-    updateFiltersDebounced(priceRange);
+    if (priceRange !== null) {
+      updateFiltersDebounced(priceRange);
+    }
   }, [priceRange, updateFiltersDebounced]);
 
-  // Fetch courses when filters, order, or page changes
   useEffect(() => {
     fetchCourses({ ...filters, ...order, page: currentPage });
   }, [filters, order, currentPage, fetchCourses]);
@@ -70,7 +58,7 @@ export default function AllCoursesList() {
       ...prevFilters,
       [field]: value,
     }));
-    setCurrentPage(1); // Reset to the first page after filtering
+    setCurrentPage(1);
   };
 
   const handleOrderBy = (orderBy, orderDirection) => {
@@ -96,7 +84,6 @@ export default function AllCoursesList() {
 
   return (
     <div className="all-courses-list">
-      {/* Course Filter */}
       <div className="course-filter">
         <input
           type="text"
@@ -109,54 +96,47 @@ export default function AllCoursesList() {
           <option value="0">Paid</option>
         </select>
 
-        {/* Slider de rango de precios */}
-        <div style={{ margin: "2rem 0", padding: "0 1rem" }}>
-          <label>
-            Price Range: ${priceRange[0]} - ${priceRange[1]}
-          </label>
-          <Range
-            step={10}
-            min={boundsLoaded ? minPrice : MIN}
-            max={boundsLoaded ? maxPrice : MAX}
-            values={priceRange}
-            onChange={setPriceRange}
-            renderTrack={({ props, children }) => (
-              <div
-                {...props}
-                style={{
-                  ...props.style,
-                  height: "6px",
-                  width: "100%",
-                  background: `linear-gradient(to right,
-                    #ccc ${(priceRange[0] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%,
-                    #0c66ee ${(priceRange[0] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}% ${(priceRange[1] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%,
-                    #ccc ${(priceRange[1] - (boundsLoaded ? minPrice : MIN)) / ((boundsLoaded ? maxPrice : MAX) - (boundsLoaded ? minPrice : MIN)) * 100}%)`,
-                  borderRadius: "3px",
+        {/* Price Range Slider */}
+        {minPrice !== null &&
+          maxPrice !== null &&
+          priceRange !== null &&
+          priceRange[0] !== null &&
+          priceRange[1] !== null && (
+            <div style={{ margin: "2rem 0", padding: "0 1rem" }}>
+              <label>
+                Price Range: ${priceRange[0]} - ${priceRange[1]}
+              </label>
+              <MultiRangeSlider
+                min={minPrice}
+                max={maxPrice}
+                step={1}
+                minValue={priceRange[0]}
+                maxValue={priceRange[1]}
+                onChange={({ minValue, maxValue }) => {
+                    console.log("Price Range Changed:", minValue, maxValue);
+                  setPriceRange([minValue, maxValue]);
                 }}
-              >
-                {children}
-              </div>
-            )}
-            renderThumb={({ props, index }) => (
-              <div
-                key={index}
-                {...props}
                 style={{
-                  ...props.style,
-                  height: "20px",
-                  width: "20px",
-                  borderRadius: "50%",
-                  backgroundColor: "#0c66ee",
-                  boxShadow: "0px 2px 6px #aaa",
+                  // Puedes agregar estilos personalizados aquí si quieres
+                  border: "none",
+                  boxShadow: "none",
+                  height: "40px",
                 }}
+                barLeftColor="var(--dark-color)"
+                barRightColor="var(--dark-color)"
+                thumbLeftColor="var(--primary-color)"
+                thumbRightColor="var(--primary-color)"
+                barInnerColor="var(--primary-color)"
+                ruler={false}
               />
-            )}
-          />
-        </div>
+            </div>
+          )}
       </div>
 
-      {/* Ordenar */}
-      <div className="order-by" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <div
+        className="order-by"
+        style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+      >
         <select
           value={order.orderBy}
           onChange={(e) => handleOrderBy(e.target.value, order.order)}
@@ -167,12 +147,23 @@ export default function AllCoursesList() {
           <option value="published">Published</option>
           <option value="estimated_hours">Estimated Hours</option>
         </select>
-        <button onClick={toggleOrderDirection} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--dark-color)" }}>
-          {order.order === "asc" ? <FaArrowUp size={20} /> : <FaArrowDown size={20} />}
+        <button
+          onClick={toggleOrderDirection}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--dark-color)",
+          }}
+        >
+          {order.order === "asc" ? (
+            <FaArrowUp size={20} />
+          ) : (
+            <FaArrowDown size={20} />
+          )}
         </button>
       </div>
 
-      {/* Course Cards */}
       <div className="course-cards">
         {loading ? (
           <p>Loading...</p>
@@ -181,7 +172,6 @@ export default function AllCoursesList() {
         )}
       </div>
 
-      {/* Pagination */}
       <div className="pagination">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous

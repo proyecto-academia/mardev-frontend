@@ -2,7 +2,7 @@ import React from "react";
 import defaultCourseImg from "../../assets/default-course.svg"; // Importa la imagen predeterminada
 export default function CourseCard({ course }) {
 
-  console.log("CourseCard", course);
+  // console.log("CourseCard", course);
 
   return (
     <div className="course-card">

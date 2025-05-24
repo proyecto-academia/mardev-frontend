@@ -1048,3 +1048,7 @@ p::selection {
   background-color: var(--primary-color); /* Highlight background for paragraphs */
   color: var(--light-color); /* Highlight text color for paragraphs */
 }
+
+.multi-range-slider .bar-inner{
+  background-color: var(--primary-color);
+}
