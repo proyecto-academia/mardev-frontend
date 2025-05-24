@@ -1019,3 +1019,32 @@ header.header nav a.logout:hover{
 #register-form .btn:active {
   background-color: var(--dark-color); /* Fondo oscuro */
 }
+
+/* Highlight selection color for text */
+::selection {
+  background-color: var(--primary-color); /* Highlight background */
+  color: var(--light-color); /* Highlight text color */
+}
+
+/* Highlight selection color for links */
+a::selection {
+  background-color: var(--hover-color); /* Highlight background for links */
+  color: var(--light-color); /* Highlight text color for links */
+}
+
+/* Highlight selection color for headings */
+h1::selection,
+h2::selection,
+h3::selection,
+h4::selection,
+h5::selection,
+h6::selection {
+  background-color: var(--primary-color); /* Highlight background for headings */
+  color: var(--light-color); /* Highlight text color for headings */
+}
+
+/* Highlight selection color for paragraphs */
+p::selection {
+  background-color: var(--primary-color); /* Highlight background for paragraphs */
+  color: var(--light-color); /* Highlight text color for paragraphs */
+}
