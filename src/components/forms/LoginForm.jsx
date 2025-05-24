@@ -17,7 +17,7 @@ export default function LoginForm() {
       authStore.save(user, token);
       if (authStore.isAuthenticated()) {
         notificationStore.addNotification("Login successful", "success");
-        window.location.href = "/";
+        window.location.href = "/courses";
       }
     } catch (error) {
       notificationStore.addNotification(

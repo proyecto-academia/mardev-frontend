@@ -50,11 +50,11 @@ export default function AllCoursesList() {
   }, [priceRange, updateFiltersDebounced]);
 
   useEffect(() => {
-    if(filters.minPrice === undefined || filters.maxPrice === undefined) {
-        return;
+    if (filters.minPrice === undefined || filters.maxPrice === undefined) {
+      return;
     }
-    if(filters.minPrice === null || filters.maxPrice === null) {
-        return;
+    if (filters.minPrice === null || filters.maxPrice === null) {
+      return;
     }
 
     fetchCourses({ ...filters, ...order, page: currentPage });
@@ -92,7 +92,7 @@ export default function AllCoursesList() {
   return (
     <main className="all-courses-list">
       <section className="filters-section">
-        <form className="filters-form" onSubmit={e => e.preventDefault()}>
+        <form className="filters-form" onSubmit={(e) => e.preventDefault()}>
           <div className="filter-group filter-name">
             <label htmlFor="filter-name">Filter by name</label>
             <input
@@ -102,7 +102,7 @@ export default function AllCoursesList() {
               onChange={(e) => handleFilter("name", e.target.value)}
             />
           </div>
-  
+
           <div className="filter-group filter-type">
             <label htmlFor="filter-type">Course Type</label>
             <select
@@ -115,7 +115,7 @@ export default function AllCoursesList() {
               <option value="0">Paid</option>
             </select>
           </div>
-  
+
           {minPrice !== null &&
             maxPrice !== null &&
             priceRange !== null &&
@@ -151,36 +151,43 @@ export default function AllCoursesList() {
             )}
         </form>
       </section>
-  
+
       <section className="sorting-section">
         <div className="sorting-controls">
-          <label htmlFor="order-by">Sort by:</label>
-          <select
-            id="order-by"
-            value={order.orderBy}
-            onChange={(e) => handleOrderBy(e.target.value, order.order)}
-          >
-            <option value="id">Default</option>
-            <option value="name">Name</option>
-            <option value="price">Price</option>
-            <option value="estimated_hours">Estimated Hours</option>
-          </select>
+          <div>
+            <label htmlFor="order-by">Sort by:</label>
+            <select
+              id="order-by"
+              value={order.orderBy}
+              onChange={(e) => handleOrderBy(e.target.value, order.order)}
+            >
+              <option value="id">Default</option>
+              <option value="name">Name</option>
+              <option value="price">Price</option>
+              <option value="estimated_hours">Estimated Hours</option>
+            </select>
+          </div>
           <button
             aria-label="Toggle sort direction"
             onClick={toggleOrderDirection}
             className="toggle-sort-btn"
           >
-            {order.order === "asc" ? <FaArrowUp size={20} /> : <FaArrowDown size={20} />}
+            {order.order === "asc" ? (
+              <FaArrowUp size={20} />
+            ) : (
+              <FaArrowDown size={20} />
+            )}
           </button>
         </div>
       </section>
-  
+
       <section className="courses-section">
-        {loading && minPrice !== null &&
-            maxPrice !== null &&
-            priceRange !== null &&
-            priceRange[0] !== null &&
-            priceRange[1] !== null   ? (
+        {loading &&
+        minPrice !== null &&
+        maxPrice !== null &&
+        priceRange !== null &&
+        priceRange[0] !== null &&
+        priceRange[1] !== null ? (
           <p className="loading">Loading...</p>
         ) : (
           <div className="course-cards-grid">
@@ -190,13 +197,14 @@ export default function AllCoursesList() {
           </div>
         )}
       </section>
-  
+
       <nav className="pagination" aria-label="Pagination navigation">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
         </button>
         <span>
-          Page {pagination.current_page} of {Math.ceil(pagination.total / pagination.per_page)}
+          Page {pagination.current_page} of{" "}
+          {Math.ceil(pagination.total / pagination.per_page)}
         </span>
         <button onClick={handleNextPage} disabled={!pagination.next_page}>
           Next
@@ -204,5 +212,4 @@ export default function AllCoursesList() {
       </nav>
     </main>
   );
-  
 }

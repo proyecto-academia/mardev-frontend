@@ -1131,6 +1131,7 @@ p::selection {
   display: flex;
   align-items: center;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .sorting-controls label {
@@ -1201,4 +1202,69 @@ p::selection {
 .pagination span {
   font-weight: bold;
   color: var(--dark-color);
+}
+.course-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 1.5rem; /* Space between cards */
+  padding: 2rem; /* Padding around the grid */
+  background-color: var(--light-color); /* Background color */
+  border-radius: var(--border-radius); /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.course-card {
+  background-color: var(--light-color); /* Card background */
+  border: 1px solid var(--gray-color); /* Border color */
+  border-radius: var(--border-radius); /* Rounded corners */
+  padding: 1.5rem; /* Padding inside the card */
+  text-align: center; /* Center content */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.course-card:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.course-image {
+  width: 100%; /* Full width */
+  height: 150px; /* Fixed height */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: var(--border-radius); /* Rounded corners */
+  margin-bottom: 1rem; /* Space below image */
+}
+
+.course-title {
+  font-size: 1.25rem; /* Larger font size */
+  font-weight: bold; /* Bold text */
+  margin-bottom: 0.5rem; /* Space below title */
+  color: var(--dark-color); /* Text color */
+}
+
+.course-description {
+  margin-bottom: 0.5rem; /* Space below description */
+  color: var(--gray-color); /* Secondary text color */
+}
+
+.course-price {
+  font-weight: bold; /* Bold text */
+  color: var(--primary-color); /* Highlighted color */
+  margin-bottom: 1rem; /* Space below price */
+}
+
+.btn-secondary {
+  background-color: var(--dark-color); /* Button background */
+  color: var(--light-color); /* Button text color */
+  border: none; /* No border */
+  padding: 0.75rem 1rem; /* Padding inside button */
+  border-radius: var(--border-radius); /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.btn-secondary:hover {
+  background-color: var(--hover-color); /* Darker background on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }

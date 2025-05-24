@@ -4,7 +4,6 @@ import MediaRepository from '../media/MediaRepository';
 class CourseRepository {
   constructor() {
     this.prefix = import.meta.env.VITE_PROD_CORE_PREFIX || import.meta.env.VITE_DEV_CORE_PREFIX || '';
-    this.prefix = 'http://localhost'
   }
 
   async getCourses(params = {}) {
