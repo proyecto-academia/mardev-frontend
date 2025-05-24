@@ -50,6 +50,13 @@ export default function AllCoursesList() {
   }, [priceRange, updateFiltersDebounced]);
 
   useEffect(() => {
+    if(filters.minPrice === undefined || filters.maxPrice === undefined) {
+        return;
+    }
+    if(filters.minPrice === null || filters.maxPrice === null) {
+        return;
+    }
+
     fetchCourses({ ...filters, ...order, page: currentPage });
   }, [filters, order, currentPage, fetchCourses]);
 
@@ -83,107 +90,119 @@ export default function AllCoursesList() {
   };
 
   return (
-    <div className="all-courses-list">
-      <div className="course-filter">
-        <input
-          type="text"
-          placeholder="Filter by name"
-          onChange={(e) => handleFilter("name", e.target.value)}
-        />
-        <select onChange={(e) => handleFilter("is_free", e.target.value)}>
-          <option value="">All</option>
-          <option value="1">Free</option>
-          <option value="0">Paid</option>
-        </select>
-
-        {/* Price Range Slider */}
-        {minPrice !== null &&
-          maxPrice !== null &&
-          priceRange !== null &&
-          priceRange[0] !== null &&
-          priceRange[1] !== null && (
-            <div style={{ margin: "2rem 0", padding: "0 1rem" }}>
-              <label>
-                Price Range: ${priceRange[0]} - ${priceRange[1]}
-              </label>
-              <MultiRangeSlider
-                min={minPrice}
-                max={maxPrice}
-                step={1}
-                minValue={priceRange[0]}
-                maxValue={priceRange[1]}
-                onChange={({ minValue, maxValue }) => {
-                    console.log("Price Range Changed:", minValue, maxValue);
-                  setPriceRange([minValue, maxValue]);
-                }}
-                style={{
-                  // Puedes agregar estilos personalizados aquí si quieres
-                  border: "none",
-                  boxShadow: "none",
-                  height: "40px",
-                }}
-                barLeftColor="var(--dark-color)"
-                barRightColor="var(--dark-color)"
-                thumbLeftColor="var(--primary-color)"
-                thumbRightColor="var(--primary-color)"
-                barInnerColor="var(--primary-color)"
-                ruler={false}
-              />
-            </div>
-          )}
-      </div>
-
-      <div
-        className="order-by"
-        style={{ display: "flex", alignItems: "center", gap: "1rem" }}
-      >
-        <select
-          value={order.orderBy}
-          onChange={(e) => handleOrderBy(e.target.value, order.order)}
-        >
-          <option value="id">Default</option>
-          <option value="name">Name</option>
-          <option value="price">Price</option>
-          <option value="published">Published</option>
-          <option value="estimated_hours">Estimated Hours</option>
-        </select>
-        <button
-          onClick={toggleOrderDirection}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--dark-color)",
-          }}
-        >
-          {order.order === "asc" ? (
-            <FaArrowUp size={20} />
-          ) : (
-            <FaArrowDown size={20} />
-          )}
-        </button>
-      </div>
-
-      <div className="course-cards">
-        {loading ? (
-          <p>Loading...</p>
+    <main className="all-courses-list">
+      <section className="filters-section">
+        <form className="filters-form" onSubmit={e => e.preventDefault()}>
+          <div className="filter-group filter-name">
+            <label htmlFor="filter-name">Filter by name</label>
+            <input
+              id="filter-name"
+              type="text"
+              placeholder="Filter by name"
+              onChange={(e) => handleFilter("name", e.target.value)}
+            />
+          </div>
+  
+          <div className="filter-group filter-type">
+            <label htmlFor="filter-type">Course Type</label>
+            <select
+              id="filter-type"
+              onChange={(e) => handleFilter("is_free", e.target.value)}
+              defaultValue=""
+            >
+              <option value="">All</option>
+              <option value="1">Free</option>
+              <option value="0">Paid</option>
+            </select>
+          </div>
+  
+          {minPrice !== null &&
+            maxPrice !== null &&
+            priceRange !== null &&
+            priceRange[0] !== null &&
+            priceRange[1] !== null && (
+              <div className="filter-group filter-price-range">
+                <label htmlFor="price-range">
+                  Price Range: ${priceRange[0]} - ${priceRange[1]}
+                </label>
+                <MultiRangeSlider
+                  id="price-range"
+                  min={minPrice}
+                  max={maxPrice}
+                  step={1}
+                  minValue={priceRange[0]}
+                  maxValue={priceRange[1]}
+                  onChange={({ minValue, maxValue }) => {
+                    setPriceRange([minValue, maxValue]);
+                  }}
+                  style={{
+                    border: "none",
+                    boxShadow: "none",
+                    height: "40px",
+                  }}
+                  barLeftColor="var(--dark-color)"
+                  barRightColor="var(--dark-color)"
+                  thumbLeftColor="var(--primary-color)"
+                  thumbRightColor="var(--primary-color)"
+                  barInnerColor="var(--primary-color)"
+                  ruler={false}
+                />
+              </div>
+            )}
+        </form>
+      </section>
+  
+      <section className="sorting-section">
+        <div className="sorting-controls">
+          <label htmlFor="order-by">Sort by:</label>
+          <select
+            id="order-by"
+            value={order.orderBy}
+            onChange={(e) => handleOrderBy(e.target.value, order.order)}
+          >
+            <option value="id">Default</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="estimated_hours">Estimated Hours</option>
+          </select>
+          <button
+            aria-label="Toggle sort direction"
+            onClick={toggleOrderDirection}
+            className="toggle-sort-btn"
+          >
+            {order.order === "asc" ? <FaArrowUp size={20} /> : <FaArrowDown size={20} />}
+          </button>
+        </div>
+      </section>
+  
+      <section className="courses-section">
+        {loading && minPrice !== null &&
+            maxPrice !== null &&
+            priceRange !== null &&
+            priceRange[0] !== null &&
+            priceRange[1] !== null   ? (
+          <p className="loading">Loading...</p>
         ) : (
-          courses.map((course) => <CourseCard key={course.id} course={course} />)
+          <div className="course-cards-grid">
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
         )}
-      </div>
-
-      <div className="pagination">
+      </section>
+  
+      <nav className="pagination" aria-label="Pagination navigation">
         <button onClick={handlePrevPage} disabled={currentPage === 1}>
           Previous
         </button>
         <span>
-          Page {pagination.current_page} of{" "}
-          {Math.ceil(pagination.total / pagination.per_page)}
+          Page {pagination.current_page} of {Math.ceil(pagination.total / pagination.per_page)}
         </span>
         <button onClick={handleNextPage} disabled={!pagination.next_page}>
           Next
         </button>
-      </div>
-    </div>
+      </nav>
+    </main>
   );
+  
 }
