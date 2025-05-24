@@ -9,15 +9,16 @@ const MIN = 0;
 const MAX = 1000;
 
 export default function AllCoursesList() {
-  const { fetchCourses, courses, pagination, loading } = useCourseStore();
+  const { fetchCourses, courses, pagination, loading, minPrice, maxPrice } = useCourseStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState({ orderBy: "id", order: "asc" });
+  const [filters, setFilters] = useState({
+    minPrice: minPrice || MIN,
+    maxPrice: maxPrice || MAX, 
+  });
   const [priceRange, setPriceRange] = useState([MIN, MAX]);
 
-  const [filters, setFilters] = useState({
-    minPrice: MIN,
-    maxPrice: MAX,
-  });
+
 
   // Debounced setter for filters
   const updateFiltersDebounced = React.useMemo(
@@ -94,8 +95,8 @@ export default function AllCoursesList() {
           </label>
           <Range
             step={10}
-            min={MIN}
-            max={MAX}
+            min={filters.minPrice}
+            max={filters.maxPrice}
             values={priceRange}
             onChange={setPriceRange}
             renderTrack={({ props, children }) => (

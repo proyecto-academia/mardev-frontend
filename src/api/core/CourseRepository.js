@@ -67,6 +67,28 @@ class CourseRepository {
       throw error;
     }
   }
+
+  async getMinPrice(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/courses/prices/min`);
+      console.log('[GET MIN PRICE RESPONSE]:', response.data);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET MIN PRICE ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
+
+  async getMaxPrice(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/courses/prices/max`);
+      console.log('[GET MAX PRICE RESPONSE]:', response.data);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET MAX PRICE ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
 }
 
 export default new CourseRepository();

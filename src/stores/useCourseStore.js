@@ -23,14 +23,53 @@ export const useCourseStore = create((set) => ({
   pagination: {},
   loading: false,
   coursesPhotosUrls: loadInitialCache(),
+  minPrice: 0, // Valor predeterminado
+  maxPrice: 1000, // Valor predeterminado
+
+  // Método para cargar los límites de precios desde la API
+  loadPriceBounds: async () => {
+    try {
+      const min = await CourseRepository.getMinPrice();
+      const max = await CourseRepository.getMaxPrice();
+      set({
+        minPrice: min?.minPrice ?? 0,
+        maxPrice: max?.maxPrice ?? 1000,
+      });
+    } catch (e) {
+      console.error("Error loading price bounds", e);
+    }
+  },
 
   fetchCourses: async (params = {}) => {
     set({ loading: true });
     try {
       const response = await CourseRepository.getCourses(params);
       console.log("Courses:", response); // Log the courses
+      const { getUrlFromStore, pushUrlToStore } = useCourseStore.getState();
+      const coursesWithPhotos = await Promise.all(
+        response.courses.data.map(async (course) => {
+          const cachedUrl = getUrlFromStore(course.id);
+          if (cachedUrl) {
+            console.log(`Usando foto cacheada de ${course.id}`);
+            course.photo = cachedUrl;
+          } else {
+            console.log(`pido la foto de ${course.id}`);
+            const photo = await MediaRepository.getUrlSingleObject(
+              "courses",
+              course.id,
+              "photo"
+            );
+            const photoUrl = photo?.url || null;
+            if (photoUrl) {
+              course.photo = photoUrl;
+              pushUrlToStore(course.id, photoUrl);
+            }
+          }
+          return course;
+        })
+      );
       set({
-        courses: response.courses.data,
+        courses: coursesWithPhotos,
         pagination: response.pagination,
       });
     } catch (error) {
@@ -88,7 +127,7 @@ export const useCourseStore = create((set) => ({
       set({ loading: false });
     }
   },
-  //sin cachear
+
   fetchCoursePhotoWithoutCache: async (id) => {
     try {
       const photo = await MediaRepository.getUrlSingleObject(
