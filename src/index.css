@@ -1288,7 +1288,7 @@ main .course-detail .class-list{
   max-height: 50vh;
   overflow-y: auto;
   position: sticky;
-  top: 1em;
+  top: 10vh;
 }
 
 .class-image{
@@ -1381,7 +1381,7 @@ main .course-detail .class-list{
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary-color);
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .img-container {
@@ -1394,6 +1394,7 @@ main .course-detail .class-list{
   max-width: 100%;
   height: auto;
   border-radius: var(--border-radius);
+  width: 520px;
 }
 
 .class-card-body {

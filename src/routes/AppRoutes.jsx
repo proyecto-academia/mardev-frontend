@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-// import { useAuthStore } from '../stores/useAuthStore'
 import PublicLayout from '../layouts/PublicLayout'
 import PrivateLayout from '../layouts/PrivateLayout'
 
@@ -32,7 +31,7 @@ export default function AppRoutes() {
           <Route element={<PrivateLayout />}>
             <Route path="/courses" element={<CourseList />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
-            <Route path="/classes/:id" element={<ClassDetail />} />
+            <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />
           </Route>
         </Route>
 
