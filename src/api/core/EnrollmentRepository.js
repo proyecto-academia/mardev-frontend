@@ -1,8 +1,40 @@
 import apiClient from '../../services/apiClient';
 
-const EnrollmentRepository = {
-  createEnrollment: (data) => apiClient.post('/enrollments', data),
-  getEnrollment: (id) => apiClient.get(`/enrollments/${id}`),
-};
+class EnrollmentRepository {
+  constructor() {
+    this.prefix = import.meta.env.VITE_PROD_CORE_PREFIX || import.meta.env.VITE_DEV_CORE_PREFIX || '';
+  }
+
+  async createEnrollment(data) {
+    try {
+      const response = await apiClient.post(`${this.prefix}/enrollments`, data);
+      return response.data.data;
+    } catch (error) {
+      console.error('[CREATE ENROLLMENT ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
+
+  async getEnrollment(id) {
+    try {
+      const response = await apiClient.get(`${this.prefix}/enrollments/${id}`);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET ENROLLMENT ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
+
+  async getAvailableCourses(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/enrollments/courses`);
+      console.log('available courses response:', response.data);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET AVAILABLE COURSES ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
+}
 
 export default new EnrollmentRepository();

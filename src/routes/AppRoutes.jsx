@@ -12,6 +12,8 @@ import ClassDetail from '../pages/classes/ClassDetail'
 
 // Helpers
 import PrivateRoute from './PrivateRoutes'
+import NecessaryEnrollmentRoutes from './NecessaryEnrollmentRoutes'
+import CourseBuy from '../pages/courses/ CourseBuy'
 
 export default function AppRoutes() {
   // const user = useAuthStore((state) => state.user)
@@ -24,14 +26,18 @@ export default function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
         </Route>
 
         {/* Rutas privadas */}
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
             <Route path="/courses" element={<CourseList />} />
-            <Route path="/courses/:id" element={<CourseDetail />} />
-            <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />
+            <Route path="/courses/buy/:id" element={<CourseBuy />} />
+            <Route element={<NecessaryEnrollmentRoutes/>} >
+              <Route path="/courses/:id" element={<CourseDetail />} />
+              <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />
+            </Route>
           </Route>
         </Route>
 

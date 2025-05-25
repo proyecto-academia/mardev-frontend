@@ -2,6 +2,7 @@ import { create } from "zustand";
 import ClassRepository from "../api/core/ClassRepository";
 import MediaRepository from "../api/media/MediaRepository";
 import { useNotificationStore } from "./useNotificationStore";
+import { SiN26 } from "react-icons/si";
 
 const loadInitialCache = () => {
   try {
@@ -62,7 +63,9 @@ export const useClassStore = create((set) => ({
               classItem.id,
               "video"
             );
-            const videoUrl = video?.url || null;
+            console
+            const videoUrl = video.url || null;
+            console.log(`Video URL for class ${classItem.id}:`, videoUrl);
             if (videoUrl) {
               classItem.video = videoUrl;
               pushUrlToStore(classItem.id, videoUrl, "video");
