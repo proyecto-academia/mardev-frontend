@@ -13,7 +13,7 @@ import ClassDetail from '../pages/classes/ClassDetail'
 // Helpers
 import PrivateRoute from './PrivateRoutes'
 import NecessaryEnrollmentRoutes from './NecessaryEnrollmentRoutes'
-import CourseBuy from '../pages/courses/ CourseBuy'
+import CourseBuy from '../pages/courses/CourseBuy'
 
 export default function AppRoutes() {
   // const user = useAuthStore((state) => state.user)
