@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import PaymentRepository from "../../api/core/PaymentRepository";
+import { useNotificationStore } from "../../stores/useNotificationStore";
 
 const stripePromise = loadStripe("pk_test_51RSlPED85p1Y11xFIO3NcOblwPv5Ir4wqlODkhdClqHPp0IvOjukVAYO7KNvtRd8B0D7JuAOiVEy7EgT0AGgsU1M00Ekqemcme");
 
-export default function PaymentProvider({ itemId, itemType, token, children }) {
+export default function PaymentProvider({ itemId, itemType, children }) {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    // Llama al endpoint para crear el Payment Intent
-    fetch("https://mardev.es/api/core/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Token de autenticación
-      },
-      body: JSON.stringify({ id: itemId, type: itemType }),
-    })
-      .then((res) => res.json())
+    // Llama al repositorio para crear el Payment Intent
+    PaymentRepository.createPaymentIntent(itemId, itemType)
       .then((data) => {
-        if (data.data?.clientSecret) {
-          setClientSecret(data.data.clientSecret);
+        if (data.clientSecret) {
+          setClientSecret(data.clientSecret);
         } else {
-          alert("Error al obtener clientSecret");
+          useNotificationStore.getState().addNotification({
+            type: "error",
+            message: "Error al crear el Payment Intent. Por favor, inténtalo de nuevo más tarde.",
+          });
         }
       })
-      .catch((err) => {
-        console.error(err);
-        alert("Error en la petición");
+      .catch((error) => {
+        console.error("Error en la petición:", error);
+        useNotificationStore.getState().addNotification({
+          type: "error",
+          message: "Error al crear el Payment Intent. Por favor, inténtalo de nuevo más tarde.",
+        });
       });
-  }, [itemId, itemType, token]);
+  }, [itemId, itemType]);
 
   if (!clientSecret) {
     return <p>Cargando...</p>;

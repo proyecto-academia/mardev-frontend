@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useAvailableContentStore } from "../../stores/useAvailableContentStore";
+import { useNotificationStore } from "../../stores/useNotificationStore";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutForm({ clientSecret, token }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
-  console.log("clientSecret", clientSecret);
+  const navigate = useNavigate();
+  const fetchAvailableCourses = useAvailableContentStore((state) => state.fetchAvailableCourses);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Procesando pago...");
-    console.log((!stripe || !elements || !clientSecret) )
     if (!stripe || !elements || !clientSecret) return;
 
     setLoading(true);
@@ -22,7 +23,10 @@ export default function CheckoutForm({ clientSecret, token }) {
     });
 
     if (error) {
-      alert(error.message);
+      useNotificationStore.getState().addNotification({
+        type: "error",
+        message: `Error al procesar el pago: ${error.message}`,
+      });
       setLoading(false);
       return;
     }
@@ -38,11 +42,15 @@ export default function CheckoutForm({ clientSecret, token }) {
         body: JSON.stringify({ payment_intent_id: paymentIntent.id }),
       })
         .then((res) => res.json())
-        .then((data) => {
+        .then(async (data) => {
           if (data.success) {
-            alert("Pago y compra confirmados con éxito!");
-            const availableContentStore = useAvailableContentStore.getState();
-            availableContentStore.fetchAvailableCourses();
+            try {
+              await fetchAvailableCourses(); // Espera a que termine fetchAvailableCourses
+              navigate("/profile", { replace: true }); // Redirige al usuario
+            } catch (err) {
+              console.error("Error al cargar los cursos disponibles:", err);
+              alert("Error al cargar los cursos disponibles.");
+            }
           } else {
             alert("Error al confirmar la compra.");
           }

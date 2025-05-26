@@ -9,6 +9,7 @@ import Register from '../pages/Register'
 import CourseList from '../pages/courses/CourseList'
 import CourseDetail from '../pages/courses/CourseDetail'
 import ClassDetail from '../pages/classes/ClassDetail'
+import Profile from '../pages/Profile'
 
 // Helpers
 import PrivateRoute from './PrivateRoutes'
@@ -32,6 +33,7 @@ export default function AppRoutes() {
         {/* Rutas privadas */}
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
+            <Route path="/profile" element={<Profile />} />
             <Route path="/courses" element={<CourseList />} />
             <Route path="/courses/buy/:id" element={<CourseBuy />} />
             <Route element={<NecessaryEnrollmentRoutes/>} >
