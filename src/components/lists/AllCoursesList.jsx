@@ -197,19 +197,26 @@ export default function AllCoursesList() {
           </div>
         )}
       </section>
-
-      <nav className="pagination" aria-label="Pagination navigation">
-        <button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>
-          Page {pagination.current_page} of{" "}
-          {Math.ceil(pagination.total / pagination.per_page)}
-        </span>
-        <button onClick={handleNextPage} disabled={!pagination.next_page}>
-          Next
-        </button>
-      </nav>
+      {minPrice !== null &&
+        maxPrice !== null &&
+        priceRange !== null &&
+        priceRange[0] !== null &&
+        priceRange[1] !== null && (
+          <nav className="pagination" aria-label="Pagination navigation">
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              Previous
+            </button>
+            <span>
+              Page {pagination.current_page} of{" "}
+              {pagination.total && pagination.per_page
+                ? Math.ceil(pagination.total / pagination.per_page)
+                : 1}
+            </span>
+            <button onClick={handleNextPage} disabled={!pagination.next_page}>
+              Next
+            </button>
+          </nav>
+        )}
     </main>
   );
 }

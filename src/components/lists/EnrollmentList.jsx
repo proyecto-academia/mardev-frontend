@@ -15,7 +15,7 @@ export default function EnrollmentList({ enrollments }) {
   );
 
   return (
-    <div>
+    <div className="enrollment-list">
       <h2>Enrolled Courses</h2>
       {enrolledCourses.length > 0 ? (
         enrolledCourses.map((enrollment) => (

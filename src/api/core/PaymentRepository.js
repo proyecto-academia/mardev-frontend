@@ -29,6 +29,17 @@ class PaymentRepository {
       throw error;
     }
   }
+
+
+  async getUserPurchases(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/purchases/user`);
+      return response.data.data; // Devuelve las compras del usuario
+    } catch (error) {
+      console.error("[GET USER PURCHASES ERROR]:", error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
 }
 
 export default new PaymentRepository();
