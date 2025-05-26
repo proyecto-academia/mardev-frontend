@@ -1,11 +1,12 @@
 import { useAuthStore } from "../../stores/useAuthStore";
 import AuthRepository from "../../api/auth/AuthRepository";
 import { useNotificationStore } from "../../stores/useNotificationStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const authStore = useAuthStore();
   const notificationStore = useNotificationStore();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ export default function LoginForm() {
       authStore.save(user, token);
       if (authStore.isAuthenticated()) {
         notificationStore.addNotification("Login successful", "success");
-        window.location.href = "/courses";
+        navigate("/courses");
       }
     } catch (error) {
       notificationStore.addNotification(
