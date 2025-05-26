@@ -1,6 +1,6 @@
 import React from "react";
 import CourseCard from "../cards/CourseCard";
-export default function LatestsCoursesList({ courses }) {
+export default function CoursesList({ courses }) {
   return (
     <div className="courses-container">
       {courses.map((course) => (

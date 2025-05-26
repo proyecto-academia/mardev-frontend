@@ -4,6 +4,7 @@ import { useNotificationStore } from "./useNotificationStore";
 
 export const useAvailableContentStore = create((set) => ({
     availableCoursesIds: [],
+    courses: [],
     loading: false,
 
     fetchAvailableCourses: async () => {
@@ -17,6 +18,7 @@ export const useAvailableContentStore = create((set) => ({
 
             const courseIds = response.courses.map((course) => course.id);
             set({ availableCoursesIds: courseIds });
+            set({ courses: response.courses });
         } catch (error) {
             const notificationStore = useNotificationStore.getState();
             notificationStore.addNotification({

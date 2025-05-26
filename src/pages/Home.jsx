@@ -1,7 +1,7 @@
 import Hero from "../components/common/Hero";
 import { useLatestCourses } from "../hooks/useFetchLatestCourses";
 import { useFetchPacks } from "../hooks/useFetchPacks";
-import LatestsCoursesList from "../components/lists/LatestsCoursesList";
+import CoursesList from "../components/lists/CoursesList";
 import TestimonialsList from "../components/lists/TestimonialsList";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <section id="latest-courses-section" className="section">
         <h2 className="section-title">Últimos Cursos</h2>
 
-        <LatestsCoursesList courses={latestCourses} />
+        <CoursesList courses={latestCourses} />
       </section>
 
       <section id="packs-section" className="section">

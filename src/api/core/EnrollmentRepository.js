@@ -5,6 +5,16 @@ class EnrollmentRepository {
     this.prefix = import.meta.env.VITE_PROD_CORE_PREFIX || import.meta.env.VITE_DEV_CORE_PREFIX || '';
   }
 
+  async getUserEnrollments(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/enrollments/user`);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET USER ENROLLMENTS ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
+
   async createEnrollment(data) {
     try {
       const response = await apiClient.post(`${this.prefix}/enrollments`, data);
