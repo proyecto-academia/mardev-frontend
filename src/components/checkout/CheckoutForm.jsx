@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import {
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 import { useAvailableContentStore } from "../../stores/useAvailableContentStore";
 import { useNotificationStore } from "../../stores/useNotificationStore";
 import { useNavigate } from "react-router-dom";
 
-export default function CheckoutForm({ clientSecret, token }) {
+export default function CheckoutForm({ clientSecret, token, successUrl = '/profile' }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -17,7 +23,7 @@ export default function CheckoutForm({ clientSecret, token }) {
 
     setLoading(true);
 
-    const card = elements.getElement(CardElement);
+    const card = elements.getElement(CardNumberElement);
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: { card },
     });
@@ -46,7 +52,7 @@ export default function CheckoutForm({ clientSecret, token }) {
           if (data.success) {
             try {
               await fetchAvailableCourses(); // Espera a que termine fetchAvailableCourses
-              navigate("/profile", { replace: true }); // Redirige al usuario
+              navigate(successUrl, { replace: true }); // Redirige al usuario
             } catch (err) {
               console.error("Error al cargar los cursos disponibles:", err);
               alert("Error al cargar los cursos disponibles.");
@@ -65,15 +71,25 @@ export default function CheckoutForm({ clientSecret, token }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center">
-      <CardElement className="border p-2 mb-4 w-full max-w-md" />
-      <button
-        type="submit"
-        disabled={!stripe || !clientSecret || loading}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        {loading ? "Procesando..." : "Pagar"}
-      </button>
+    <form onSubmit={handleSubmit}>
+      <fieldset>
+        <legend>Payment Details</legend>
+        <div>
+          <label htmlFor="card-number">Card Number</label>
+          <CardNumberElement id="card-number" />
+        </div>
+        <div>
+          <label htmlFor="card-expiry">Expiry Date</label>
+          <CardExpiryElement id="card-expiry" />
+        </div>
+        <div>
+          <label htmlFor="card-cvc">CVC</label>
+          <CardCvcElement id="card-cvc" />
+        </div>
+        <button type="submit" disabled={!stripe || !clientSecret || loading}>
+          {loading ? "Processing..." : "Pay"}
+        </button>
+      </fieldset>
     </form>
   );
 }

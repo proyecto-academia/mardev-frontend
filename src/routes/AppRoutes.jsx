@@ -34,6 +34,7 @@ export default function AppRoutes() {
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path='/profile/course/:id' element={<Profile />}></Route>
             <Route path="/courses" element={<CourseList />} />
             <Route path="/courses/buy/:id" element={<CourseBuy />} />
             <Route element={<NecessaryEnrollmentRoutes/>} >

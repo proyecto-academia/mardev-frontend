@@ -1,20 +1,64 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import PaymentProvider from "../../components/checkout/PaymentProvider";
 import CheckoutForm from "../../components/checkout/CheckoutForm";
+import { useCourseStore } from "../../stores/useCourseStore";
 
 export default function CourseBuy() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const itemType = "course"; // Tipo de ítem ("course" o "pack")
   const token = localStorage.getItem("token"); // Token de autenticación
+  const { singleCourse, fetchCourse } = useCourseStore();
+
+  useEffect(() => {
+    const fetchCourseIfNeeded = async () => {
+      if (singleCourse == null || singleCourse.id !== parseInt(id)) {
+        await fetchCourse(id);
+      }
+    };
+    fetchCourseIfNeeded();
+  }, [singleCourse, fetchCourse, id]);
+
+  useEffect(() => {
+    if (singleCourse?.is_free) {
+      navigate("/packs", { replace: true }); // Redirige a /packs si el curso es gratuito
+    }
+  }, [singleCourse, navigate]);
+
+  if (!singleCourse) {
+    return <p>Loading course details...</p>;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-4">Course Purchase</h1>
-      <p className="text-lg mb-6">To access this course, please purchase it. Test card: 4242424242424242 xx/xx xxx xxxxxx</p>
-      <PaymentProvider itemId={id} itemType={itemType} token={token}>
-        <CheckoutForm token={token} />
-      </PaymentProvider>
-    </div>
+    <section className="course-buy">
+      <article className="course-buy-details">
+        <header>
+          <h1>{singleCourse.name}</h1>
+          <p>{singleCourse.description}</p>
+        </header>
+        <img src={singleCourse.photo} alt={singleCourse.name} />
+        
+      </article>
+      <div className="checkout-container">
+        <h2>Checkout</h2>
+        <PaymentProvider itemId={id} itemType={itemType} token={token}>
+          <CheckoutForm token={token} successUrl={`/profile/course/${id}`}/>
+          <ul>
+          <li>
+            <strong>Estimated Hours:</strong> {singleCourse.estimated_hours}
+          </li>
+          <li>
+            <strong>Price:</strong>{" "}
+            {singleCourse.is_free ? "Free" : `$${singleCourse.price}`}
+          </li>
+          <li>
+            <strong>Published:</strong>{" "}
+            {new Date(singleCourse.created_at).toLocaleDateString()}
+          </li>
+        </ul>
+        </PaymentProvider>
+      </div>
+    </section>
   );
 }

@@ -24,12 +24,14 @@ export default function RegisterForm() {
     }
 
     try {
-      const { user, token } = await AuthRepository.register(
+      const data = await AuthRepository.register(
         name,
         email,
         password,
         passwordConfirmation
       );
+      const token = data.access_token;
+      const user = data.user;
       authStore.save(user, token);
       if (authStore.isAuthenticated()) {
         notificationStore.addNotification("Registration successful", "success");
