@@ -235,4 +235,75 @@ export const useCourseStore = create((set) => ({
 
     return null;
   },
+
+  fetchCoursesByPack: async (packId) => {
+    set({ loading: true });
+    try {
+      // Verificar si los cursos del pack están en caché
+      const cachedPackCourses = localStorage.getItem(`packCourses_${packId}`);
+      const now = Date.now();
+
+      if (cachedPackCourses) {
+        const parsedCache = JSON.parse(cachedPackCourses);
+        if (parsedCache.expirationTime > now) {
+          console.log(`Usando cursos cacheados para el pack ${packId}`);
+          set({ courses: parsedCache.courses });
+          set({ loading: false });
+          return; // Usar los datos en caché
+        }
+        // Si está expirado, eliminarlo
+        localStorage.removeItem(`packCourses_${packId}`);
+      }
+
+      // Si no hay caché válido, hacer la solicitud a la API
+      const response = await CourseRepository.getCoursesByPackId(packId);
+      console.log("Courses by pack:", response); // Log the courses by pack
+
+      const { getUrlFromStore, pushUrlToStore } = useCourseStore.getState();
+      const coursesWithPhotos = await Promise.all(
+        response.map(async (course) => {
+          const cachedUrl = getUrlFromStore(course.id);
+          if (cachedUrl) {
+            console.log(`Usando foto cacheada de ${course.id}`);
+            course.photo = cachedUrl;
+          } else {
+            console.log(`pido la foto de ${course.id}`);
+            const photo = await MediaRepository.getUrlSingleObject(
+              "courses",
+              course.id,
+              "photo"
+            );
+            const photoUrl = photo?.url || null;
+            if (photoUrl) {
+              course.photo = photoUrl;
+              pushUrlToStore(course.id, photoUrl);
+            }
+          }
+          return course;
+        })
+      );
+
+      // Guardar los cursos en caché con una expiración de 15 minutos
+      const fifteenMinutes = 15 * 60 * 1000;
+      const expirationTime = now + fifteenMinutes;
+      localStorage.setItem(
+        `packCourses_${packId}`,
+        JSON.stringify({ courses: coursesWithPhotos, expirationTime })
+      );
+
+      set({
+        courses: coursesWithPhotos,
+        pagination: response.pagination,
+      });
+    } catch (error) {
+      const notificationStore = useNotificationStore.getState();
+      notificationStore.addNotification({
+        type: "error",
+        message: "Error al cargar los cursos del pack. Por favor, inténtalo de nuevo.",
+      });
+      console.error("Error loading courses by pack:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));

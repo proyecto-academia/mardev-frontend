@@ -3,6 +3,7 @@ import { useLatestCourses } from "../hooks/useFetchLatestCourses";
 import { useFetchPacks } from "../hooks/useFetchPacks";
 import CoursesList from "../components/lists/CoursesList";
 import TestimonialsList from "../components/lists/TestimonialsList";
+import PackCard from "../components/cards/PackCard";
 
 export default function Home() {
   const latestCourses = useLatestCourses();
@@ -20,18 +21,8 @@ export default function Home() {
       <section id="packs-section" className="section">
         <h2 className="section-title">Packs Disponibles</h2>
         <div className="packs-container">
-          {packs.map((pack) => (
-            <div
-              key={pack.id}
-              className={`pack-card ${pack.is_free ? "pack-free" : ""}`}
-            >
-              <h3 className="pack-title">{pack.name}</h3>
-              <p className="pack-description">{pack.description}</p>
-              <p className="pack-price">{`$${pack.price}`}</p>
-              <button className="btn btn-primary">
-                {pack.is_free ? "Try now" : "Buy"}
-              </button>
-            </div>
+        {packs.map((pack) => (
+            <PackCard key={pack.id} pack={pack} />
           ))}
         </div>
       </section>

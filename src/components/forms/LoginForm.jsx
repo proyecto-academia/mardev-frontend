@@ -1,4 +1,5 @@
 import { useAuthStore } from "../../stores/useAuthStore";
+import { useAvailableContentStore } from "../../stores/useAvailableContentStore";
 import AuthRepository from "../../api/auth/AuthRepository";
 import { useNotificationStore } from "../../stores/useNotificationStore";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 export default function LoginForm() {
   const authStore = useAuthStore();
   const notificationStore = useNotificationStore();
+  const fetchAvailableCourses = useAvailableContentStore((state) => state.fetchAvailableCourses)
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,6 +21,7 @@ export default function LoginForm() {
       authStore.save(user, token);
       if (authStore.isAuthenticated()) {
         notificationStore.addNotification("Login successful", "success");
+        fetchAvailableCourses();
         navigate("/courses");
       }
     } catch (error) {

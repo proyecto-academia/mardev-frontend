@@ -89,6 +89,16 @@ class CourseRepository {
       throw error;
     }
   }
+
+  async getCoursesByPackId(packId) {
+    try {
+      const response = await apiClient.get(`${this.prefix}/packs/${packId}/courses`);
+      return response.data.data;
+    } catch (error) {
+      console.error(`[GET COURSES BY PACK ID ERROR]: ${error.response?.data?.message || error.message}`);
+      throw error;
+    }
+  }
 }
 
 export default new CourseRepository();

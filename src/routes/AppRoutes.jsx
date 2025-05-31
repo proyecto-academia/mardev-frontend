@@ -1,52 +1,54 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import PublicLayout from '../layouts/PublicLayout'
-import PrivateLayout from '../layouts/PrivateLayout'
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React, { Suspense } from "react";
+import PublicLayout from "../layouts/PublicLayout";
+import PrivateLayout from "../layouts/PrivateLayout";
 
-// Pages
-import Home from '../pages/Home'
-import Login from '../pages/Login'
-import Register from '../pages/Register'
-import CourseList from '../pages/courses/CourseList'
-import CourseDetail from '../pages/courses/CourseDetail'
-import ClassDetail from '../pages/classes/ClassDetail'
-import Profile from '../pages/Profile'
+// Lazy-loaded pages
+const Home = React.lazy(() => import("../pages/Home"));
+const Login = React.lazy(() => import("../pages/Login"));
+const Register = React.lazy(() => import("../pages/Register"));
+const CourseList = React.lazy(() => import("../pages/courses/CourseList"));
+const CourseDetail = React.lazy(() => import("../pages/courses/CourseDetail"));
+const ClassDetail = React.lazy(() => import("../pages/classes/ClassDetail"));
+const PackListIncludedCourses = React.lazy(() => import("../pages/packs/PackListIncludedCourses"));
+const Profile = React.lazy(() => import("../pages/Profile"));
+const CourseBuy = React.lazy(() => import("../pages/courses/CourseBuy"));
 
 // Helpers
-import PrivateRoute from './PrivateRoutes'
-import NecessaryEnrollmentRoutes from './NecessaryEnrollmentRoutes'
-import CourseBuy from '../pages/courses/CourseBuy'
+import PrivateRoute from "./PrivateRoutes";
+import NecessaryEnrollmentRoutes from "./NecessaryEnrollmentRoutes";
 
 export default function AppRoutes() {
-  // const user = useAuthStore((state) => state.user)
-
   return (
     <Router>
-      <Routes>
-        {/* Rutas públicas */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+      <Suspense fallback={<p>Loading...</p>}>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
 
-        </Route>
-
-        {/* Rutas privadas */}
-        <Route element={<PrivateRoute />}>
-          <Route element={<PrivateLayout />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path='/profile/course/:id' element={<Profile />}></Route>
-            <Route path="/courses" element={<CourseList />} />
-            <Route path="/courses/buy/:id" element={<CourseBuy />} />
-            <Route element={<NecessaryEnrollmentRoutes/>} >
-              <Route path="/courses/:id" element={<CourseDetail />} />
-              <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />
+          {/* Rutas privadas */}
+          <Route element={<PrivateRoute />}>
+            <Route element={<PrivateLayout />}>
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/course/:id" element={<Profile />} />
+              <Route path="/courses" element={<CourseList />} />
+              <Route path="/courses/buy/:id" element={<CourseBuy />} />
+              <Route path="/packs" element={<PackListIncludedCourses />} />
+              <Route element={<NecessaryEnrollmentRoutes />}>
+                <Route path="/courses/:id" element={<CourseDetail />} />
+                <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
 
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </Router>
-  )
+  );
 }
