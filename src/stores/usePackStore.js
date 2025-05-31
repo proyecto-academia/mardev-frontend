@@ -63,4 +63,12 @@ export const usePackStore = create((set) => ({
       set({ loading: false });
     }
   },
+
+  reset: () => set({
+    packs: [],
+    singlePack: null,
+    enrolledPacks: [],
+    pagination: {},
+    loading: false,
+  }),
 }));

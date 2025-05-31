@@ -22,4 +22,5 @@ export const usePurchasesStore = create((set) => ({
       set({ loading: false });
     }
   },
+  reset: () => set({ purchases: [], loading: false }),
 }));

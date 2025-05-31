@@ -3,6 +3,7 @@ import { useAvailableContentStore } from "../../stores/useAvailableContentStore"
 import AuthRepository from "../../api/auth/AuthRepository";
 import { useNotificationStore } from "../../stores/useNotificationStore";
 import { Link, useNavigate } from "react-router-dom";
+import { resetAllStores } from "../../helpers/resetAllStores";
 
 export default function LoginForm() {
   const authStore = useAuthStore();
@@ -18,6 +19,7 @@ export default function LoginForm() {
 
     try {
       const { user, token } = await AuthRepository.login(email, password);
+      resetAllStores(); // Reset all stores to clear previous state
       authStore.save(user, token);
       if (authStore.isAuthenticated()) {
         notificationStore.addNotification("Login successful", "success");

@@ -1,13 +1,11 @@
 import { Outlet } from 'react-router-dom'
 import Header from '../components/layout/Header'
-import Notifications from '../components/layout/Notifications'
 import Footer from '../components/layout/Footer'
 
 export default function PrivateLayout() {
   return (
       <div className="content-container">
         <Header />
-        <Notifications />
         <main>
           <Outlet />
         </main>

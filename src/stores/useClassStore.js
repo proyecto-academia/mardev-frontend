@@ -124,4 +124,5 @@ export const useClassStore = create((set) => ({
 
     return null;
   },
+  reset: () => set({ classes: [], loading: false, classesMediaUrls: []}),
 }));

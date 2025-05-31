@@ -306,4 +306,13 @@ export const useCourseStore = create((set) => ({
       set({ loading: false });
     }
   },
+  reset: () => set({
+    singleCourse: null,
+    courses: [],
+    pagination: {},
+    loading: false,
+    coursesPhotosUrls: loadInitialCache(),
+    minPrice: null,
+    maxPrice: null,
+  }),
 }));

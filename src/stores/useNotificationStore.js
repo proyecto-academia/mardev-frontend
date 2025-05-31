@@ -17,4 +17,9 @@ export const useNotificationStore = create((set) => ({
     set(() => ({
       notifications: [],
     })),
+
+    reset: () =>
+    set(() => ({
+      notifications: [],
+    })),
 }))

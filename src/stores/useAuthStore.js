@@ -61,4 +61,6 @@ export const useAuthStore = create((set) => ({
       !!token && !!user && tokenTime && Date.now() < parseInt(tokenTime, 10)
     );
   },
+  reset: () => set({ user: null, token: null, tokenTime: null }),
+  
 }));

@@ -30,4 +30,5 @@ export const useAvailableContentStore = create((set) => ({
             set({ loading: false });
         }
     },
+    reset: () => set({ availableCoursesIds: [], courses: [], loading: false}),
 }));

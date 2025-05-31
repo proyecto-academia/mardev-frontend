@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import PaymentProvider from "../../components/checkout/PaymentProvider";
 import CheckoutForm from "../../components/checkout/CheckoutForm";
 import { usePackStore } from "../../stores/usePackStore";
+import { useEnrollmentStore } from "../../stores/useEnrollmentStore";
+import { useAvailableContentStore } from "../../stores/useAvailableContentStore";
 
 export default function PackBuy() {
   const { packId } = useParams();
@@ -35,12 +37,26 @@ export default function PackBuy() {
   }, [singlePack, fetchPack, packId]);
 
   useEffect(() => {
-    console.log("[PackBuy] Checking if pack is free...");
-    if (singlePack?.is_free) {
-      console.log("[PackBuy] Pack is free, redirecting to /packs...");
-      navigate("/packs", { replace: true });
-    }
-  }, [singlePack, navigate]);
+    const checkIfPackIsFree = async () => {
+      console.log("[PackBuy] Checking if pack is free...");
+      if (singlePack?.is_free) {
+        try {
+          console.log("[PackBuy] Pack is free, enrolling...");
+          await useEnrollmentStore.getState().createPackEnrollment(packId);
+          console.log("[PackBuy] Enrollment successful, redirecting...");
+          const fetchAvailableCourses =
+            useAvailableContentStore.getState().fetchAvailableCourses;
+          await fetchAvailableCourses(); // Refresh available courses
+
+          navigate("/packs", { replace: true });
+        } catch (error) {
+          console.error("[PackBuy] Error enrolling in free pack:", error);
+        }
+      }
+    };
+
+    checkIfPackIsFree();
+  }, [singlePack, navigate, packId]);
 
   if (!singlePack) {
     console.log(
@@ -58,7 +74,6 @@ export default function PackBuy() {
           <h1>{singlePack.name}</h1>
           <p>{singlePack.description}</p>
         </header>
-        <img src={singlePack.photo} alt={singlePack.name} />
       </article>
       <div className="checkout-container">
         <h2>Checkout</h2>

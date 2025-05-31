@@ -1,15 +1,16 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation , useNavigate} from "react-router-dom";
 import Logo from "../common/Logo";
 import { useAuthStore } from "../../stores/useAuthStore";
-import AuthRepository from "../../api/auth/AuthRepository";
+import { resetAllStores } from "../../helpers/resetAllStores";
 
 export default function Header() {
   const authStore = useAuthStore();
   const location = useLocation(); // Obtener la ruta actual
+  const navigate = useNavigate(); // Usar navigate para redirigir
 
   const logout = () => {
-    AuthRepository.logout();
-    authStore.clear();
+    resetAllStores(); // Resetear todos los stores
+    navigate("/"); // Redirigir a la página de inicio de sesión
   };
 
   const isCurrentPage = (path) => location.pathname === path; // Comparar ruta actual con el enlace
