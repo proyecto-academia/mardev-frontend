@@ -21,6 +21,9 @@ export default function Header() {
             <Link to="/courses" className="">
               Courses
             </Link>
+            <Link to="/packs" className="">
+              Packs
+            </Link>
             <Link to="/profile" className="">
               Profile
             </Link>
@@ -39,6 +42,9 @@ export default function Header() {
           <nav className="">
             <Link to="/courses" className="">
               Courses
+            </Link>
+            <Link to="/packs" className="">
+              Packs
             </Link>
             <Link to="/profile" className="">
               Profile

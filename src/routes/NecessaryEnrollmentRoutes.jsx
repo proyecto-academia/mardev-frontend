@@ -21,6 +21,7 @@ export default function NecessaryEnrollmentRoutes() {
 
   console.log('!isLoaded', !isLoaded)
 
+  // si no tiene ningún curso disponible, redirigir a packs.
   if (!isLoaded) return <Navigate to={`/packs`} replace /> // puedes reemplazar por un spinner si quieres
 
   if (!hasAccess) {

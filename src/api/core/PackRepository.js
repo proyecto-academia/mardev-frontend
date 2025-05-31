@@ -54,6 +54,16 @@ class PackRepository {
       throw error;
     }
   }
+
+  async getUserPacks(){
+    try {
+      const response = await apiClient.get(`${this.prefix}/enrollments/packs`);
+      return response.data.data;
+    } catch (error) {
+      console.error('[GET USER PACKS ERROR]:', error.response?.data?.message || error.message);
+      throw error;
+    }
+  }
 }
 
 export default new PackRepository();
