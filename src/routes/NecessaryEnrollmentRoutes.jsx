@@ -13,12 +13,15 @@ export default function NecessaryEnrollmentRoutes() {
 
   // Normalizar los IDs del store a números por si vienen como strings
   const hasAccess = useMemo(() => {
+    
     if (!isLoaded || isNaN(numericCourseId)) return false
     const normalizedIds = availableCoursesIds.map(id => Number(id))
     return normalizedIds.includes(numericCourseId)
   }, [availableCoursesIds, numericCourseId, isLoaded])
 
-  if (!isLoaded) return null // puedes reemplazar por un spinner si quieres
+  console.log('!isLoaded', !isLoaded)
+
+  if (!isLoaded) return <Navigate to={`/packs`} replace /> // puedes reemplazar por un spinner si quieres
 
   if (!hasAccess) {
     return <Navigate to={`/courses/buy/${courseId}`} replace />
