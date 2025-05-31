@@ -4,6 +4,7 @@ import { useNotificationStore } from "./useNotificationStore";
 
 export const usePackStore = create((set) => ({
   packs: [],
+  singlePack: null,
   enrolledPacks: [],
   pagination: {},
   loading: false,
@@ -21,6 +22,24 @@ export const usePackStore = create((set) => ({
         message: "Error al cargar los packs. Por favor, inténtalo de nuevo.",
       });
       console.error("Error loading packs:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  fetchPack: async (packId) => {
+    set({ loading: true });
+    try {
+      const response = await PackRepository.getPack(packId);
+      console.log(response);
+      set({ singlePack: response });
+    } catch (error) {
+      const notificationStore = useNotificationStore.getState();
+      notificationStore.addNotification({
+        type: "error",
+        message: "Error al cargar el pack. Por favor, inténtalo de nuevo.",
+      });
+      console.error("Error loading pack:", error);
     } finally {
       set({ loading: false });
     }

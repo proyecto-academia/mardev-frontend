@@ -9,26 +9,47 @@ export default function PackBuy() {
   const navigate = useNavigate();
   const itemType = "pack"; // Tipo de ítem ("course" o "pack")
   const token = localStorage.getItem("token"); // Token de autenticación
-  const { singlePack, fetchPack } = usePackStore();
+  //   const { singlePack, fetchPack } = usePackStore();
+  const singlePack = usePackStore((state) => state.singlePack);
+  const fetchPack = usePackStore((state) => state.fetchPack);
+
+  console.log("[PackBuy] packId from useParams:", packId);
+  console.log("[PackBuy] singlePack before fetch:", singlePack);
 
   useEffect(() => {
     const fetchPackIfNeeded = async () => {
+      console.log("[PackBuy] Checking if pack needs to be fetched...");
       if (singlePack == null || singlePack.id !== parseInt(packId)) {
-        await fetchPack(packId);
+        console.log("[PackBuy] Fetching pack with ID:", packId);
+        try {
+          await fetchPack(packId);
+          console.log("[PackBuy] Pack fetched successfully.", singlePack);
+        } catch (error) {
+          console.error("[PackBuy] Error fetching pack:", error);
+        }
+      } else {
+        console.log("[PackBuy] Pack already loaded:", singlePack);
       }
     };
     fetchPackIfNeeded();
   }, [singlePack, fetchPack, packId]);
 
   useEffect(() => {
+    console.log("[PackBuy] Checking if pack is free...");
     if (singlePack?.is_free) {
-      navigate("/packs", { replace: true }); // Redirige a /packs si el pack es gratuito
+      console.log("[PackBuy] Pack is free, redirecting to /packs...");
+      navigate("/packs", { replace: true });
     }
   }, [singlePack, navigate]);
 
   if (!singlePack) {
+    console.log(
+      "[PackBuy] singlePack is null or undefined, showing loading message..."
+    );
     return <p>Loading pack details...</p>;
   }
+
+  console.log("[PackBuy] Rendering pack details:", singlePack);
 
   return (
     <section className="pack-buy">
