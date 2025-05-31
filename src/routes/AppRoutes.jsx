@@ -13,6 +13,7 @@ const ClassDetail = React.lazy(() => import("../pages/classes/ClassDetail"));
 const PackListIncludedCourses = React.lazy(() => import("../pages/packs/PackListIncludedCourses"));
 const Profile = React.lazy(() => import("../pages/Profile"));
 const CourseBuy = React.lazy(() => import("../pages/courses/CourseBuy"));
+const PackBuy = React.lazy(() => import("../pages/packs/PackBuy"));
 
 // Helpers
 import PrivateRoute from "./PrivateRoutes";
@@ -38,6 +39,7 @@ export default function AppRoutes() {
               <Route path="/courses" element={<CourseList />} />
               <Route path="/courses/buy/:id" element={<CourseBuy />} />
               <Route path="/packs" element={<PackListIncludedCourses />} />
+              <Route path="/packs/buy/:packId" element={<PackBuy />} />
               <Route element={<NecessaryEnrollmentRoutes />}>
                 <Route path="/courses/:id" element={<CourseDetail />} />
                 <Route path="/courses/:id/classes/:classId" element={<ClassDetail />} />

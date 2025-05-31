@@ -38,7 +38,7 @@ export default function PackListIncludedCourses() {
         <div className="packs-container">
           {packs.map((pack) => (
             <div
-              className="pack-card-wrapper"
+              className={`pack-card-wrapper ${hoveredPackId === pack.id ? "selected" : ""}`}
               key={pack.id}
               onMouseEnter={() => handleMouseEnter(pack.id)}
             >

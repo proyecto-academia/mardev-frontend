@@ -129,39 +129,96 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-.packs-list {
+/* Contenedor de packs */
+.packs-container {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre las tarjetas */
+  align-items: stretch; /* Estira los hijos para que tengan la misma altura */
 }
 
+/* Wrapper de cada tarjeta */
+.pack-card-wrapper {
+  flex: 1; /* Que se repartan el ancho disponible */
+  display: flex;
+}
+
+/* Tarjeta de pack */
 .pack-card {
-  flex: 1 1 250px;
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--dark-color);
+  flex: 1; /* Estírate dentro del wrapper */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribuye título/descripción y botón al final */
+  padding: 20px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.pack-price {
-  font-weight: bold;
-  margin-top: 0.5rem;
+/* Hover para la tarjeta */
+.pack-card:hover {
+  transform: scale(1.05); /* Agranda ligeramente */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más fuerte */
 }
 
-.btn-primary {
-  margin-top: 1rem;
+/* Botón dentro de la tarjeta */
+.pack-card a.btn {
+  margin-top: auto; /* Empuja el botón hacia abajo */
   background-color: var(--primary-color);
-  color: white;
+  color: var(--light-color);
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1rem;
   border-radius: var(--border-radius);
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.btn-primary:hover {
-  background-color: var(--dark-color);
+/* Hover para el botón */
+.pack-card a.btn:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.05);
+}
+
+/* Estilo para packs inscritos */
+.pack-card.pack-enrolled {
+  background-color: var(--gray-color); /* Fondo gris */
+  border: 1px solid var(--dark-color); /* Borde oscuro */
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled .pack-title,
+.pack-card.pack-enrolled .pack-description,
+.pack-card.pack-enrolled .pack-price {
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled a.btn {
+  background-color: var(--dark-color); /* Fondo oscuro */
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled a.btn:hover {
+  background-color: var(--hover-color); /* Fondo más oscuro */
+}
+
+/* Estilo para packs gratuitos */
+.pack-card.pack-free {
+  border: 2px dashed var(--primary-color);
+}
+
+.pack-card.pack-free a.btn {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.pack-card.pack-free a.btn:hover {
+  background-color: var(--primary-color);
+  color: var(--light-color);
 }
 
 /* Cursos Destacados */
@@ -1816,12 +1873,22 @@ section.packs-list .packs-container {
 section.packs-list .packs-container .pack-card-wrapper {
   flex: 1;
   flex-basis: 300px;
+  height: 100%;
 }
+
+section.packs-list .packs-container .pack-card-wrapper .pack-card{
+  height: 100%;
+}
+
+section.packs-list .packs-container .pack-card-wrapper .pack-card a{
+  display: block;
+}
+
 
 /* Estilos condicionales para packs inscritos */
 .pack-card.pack-enrolled {
   background-color: var(--gray-color); /* Fondo verde */
-  border: 2px solid var(--dark-color); /* Borde oscuro */
+  border: 1px solid var(--dark-color); /* Borde oscuro */
   color: var(--light-color); /* Texto claro */
 }
 
@@ -1845,4 +1912,8 @@ section.packs-list .packs-container .pack-card-wrapper {
 
 .pack-card.pack-enrolled .btn-secondary:hover {
   background-color: var(--hover-color); /* Fondo más oscuro */
+}
+
+section.packs-list .packs-container .pack-card-wrapper.selected .pack-card{
+  box-shadow: 0 0 10px var(--primary-color);
 }

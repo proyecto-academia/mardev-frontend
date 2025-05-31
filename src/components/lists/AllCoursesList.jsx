@@ -9,7 +9,7 @@ export default function AllCoursesList() {
   const {
     fetchCourses,
     courses,
-    pagination,
+    pagination = {}, // Default to an empty object if undefined
     loading,
     minPrice,
     maxPrice,
@@ -207,7 +207,7 @@ export default function AllCoursesList() {
               Previous
             </button>
             <span>
-              Page {pagination.current_page} of{" "}
+              Page {pagination.current_page || 1} of{" "}
               {pagination.total && pagination.per_page
                 ? Math.ceil(pagination.total / pagination.per_page)
                 : 1}
