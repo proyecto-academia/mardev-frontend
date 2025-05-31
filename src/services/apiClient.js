@@ -27,7 +27,21 @@ apiClient.interceptors.request.use(
 
 // Interceptor: manejo de errores global
 apiClient.interceptors.response.use(
-  (response) => response, // Deja pasar las respuestas exitosas
+  (response) => {
+    // Verificar si la respuesta contiene información sobre la expiración del token
+    console.log("apiClient response.data.user:", response.data.user);
+    if (response.data && response.data.user) {
+      const authStore = useAuthStore.getState();
+      authStore.saveTokenWithDefinedExpiration(
+        response.data.user.token,
+        response.data.user.expires_at
+      ); // Guarda el token con la expiración definida
+     
+
+      
+    }
+    return response; // Deja pasar las respuestas exitosas
+  }, 
   (error) => {
     const notificationStore = useNotificationStore.getState();
 

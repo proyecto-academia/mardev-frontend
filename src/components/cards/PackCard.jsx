@@ -3,10 +3,12 @@ import { usePackStore } from "../../stores/usePackStore";
 
 export default function PackCard({ pack }) {
   const enrolledPacks = usePackStore((state) => state.enrolledPacks);
+  const fetchUserEnrolledPacks = usePackStore((state) => state.fetchUserEnrolledPacks);
   useEffect(() => {
     
-    usePackStore.getState().fetchEnrolledPacks();
-  }, []);
+    // Cargar los packs inscritos al montar el componente
+    fetchUserEnrolledPacks();
+  }, [fetchUserEnrolledPacks]);
 
   // Verificar si el usuario está inscrito en el pack
   const isEnrolled = enrolledPacks.some((enrolledPack) => enrolledPack.id === pack.id);
@@ -16,9 +18,13 @@ export default function PackCard({ pack }) {
       <h3 className="pack-title">{pack.name}</h3>
       <p className="pack-description">{pack.description}</p>
       <p className="pack-price">{`$${pack.price}`}</p>
-      <button className={`btn ${isEnrolled ? "btn-secondary" : "btn-primary"}`}>
-        {isEnrolled ? "Enrolled" : pack.is_free ? "Try now" : "Buy"}
-      </button>
+      {isEnrolled ? (
+        <p className="enrolled-text">Already enrolled</p>
+      ) : (
+        <button className={`btn ${pack.is_free ? "btn-primary" : "btn-secondary"}`}>
+          {pack.is_free ? "Try now" : "Buy"}
+        </button>
+      )}
     </div>
   );
 }

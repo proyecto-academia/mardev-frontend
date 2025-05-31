@@ -30,7 +30,7 @@ export default function PackListIncludedCourses() {
 
   return (
     <>
-      <section>
+      <section className="packs-list">
         <header>
           <h1>Available Packs</h1>
           <p>Explore our curated packs to enhance your learning experience.</p>
@@ -38,6 +38,7 @@ export default function PackListIncludedCourses() {
         <div className="packs-container">
           {packs.map((pack) => (
             <div
+              className="pack-card-wrapper"
               key={pack.id}
               onMouseEnter={() => handleMouseEnter(pack.id)}
             >

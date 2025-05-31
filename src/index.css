@@ -340,6 +340,12 @@ header.header nav a:hover {
   border-bottom: 1px solid var(--primary-color); /* Subrayado */
 }
 
+header.header nav a.currentPageLink{
+  color: var(--primary-color); /* Texto amarillo */
+  border-bottom: 1px solid var(--primary-color); /* Subrayado */
+  border-radius: 0; /* Sin bordes redondeados */
+}
+
 /* Estilo para el enlace "Login" */
 
 header.header nav a.primary-link {
@@ -527,12 +533,12 @@ footer.footer .last {
   border: 2px solid var(--dark-color); /* Borde oscuro */
 }
 
-.packs-container .pack-card:last-child {
+.packs-container > .pack-card:last-child {
   background-color: var(--primary-color); /* Fondo amarillo */
   color: var(--dark-color); /* Texto blanco */
 }
 
-.packs-container .pack-card:last-child  .pack-description {
+.packs-container > .pack-card:last-child  .pack-description {
   color: var(--dark-color); /* Texto oscuro */
 }
 
@@ -542,7 +548,7 @@ footer.footer .last {
   border: 2px solid var(--primary-color); /* Borde claro */
 }
 
-.packs-container .pack-card:last-child .btn-primary:hover{
+.packs-container > .pack-card:last-child .btn-primary:hover{
   background-color: transparent; /* Fondo más oscuro */
   color: var(--dark-color); /* Texto claro */
   border: 2px solid var(--dark-color); /* Borde oscuro */
@@ -1799,4 +1805,44 @@ main .course-detail .class-list{
 .just-bought-course .btn-primary:hover {
   background-color: var(--hover-color); /* Fondo amarillo más oscuro */
   transform: scale(1.05);
+}
+
+section.packs-list .packs-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+section.packs-list .packs-container .pack-card-wrapper {
+  flex: 1;
+  flex-basis: 300px;
+}
+
+/* Estilos condicionales para packs inscritos */
+.pack-card.pack-enrolled {
+  background-color: var(--gray-color); /* Fondo verde */
+  border: 2px solid var(--dark-color); /* Borde oscuro */
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled .pack-title {
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled .pack-description {
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled .pack-price {
+  color: var(--light-color); /* Texto claro */
+}
+
+.pack-card.pack-enrolled .btn-secondary {
+  background-color: var(--dark-color); /* Fondo oscuro */
+  color: var(--light-color); /* Texto claro */
+  border: none;
+}
+
+.pack-card.pack-enrolled .btn-secondary:hover {
+  background-color: var(--hover-color); /* Fondo más oscuro */
 }
