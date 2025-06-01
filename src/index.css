@@ -1825,7 +1825,7 @@ main .course-detail .class-list{
   margin-bottom: 1rem;
 }
 
-.just-bought-course {
+.just-bought-item {
   background-color: var(--primary-color); /* Fondo amarillo */
   border: 2px solid var(--dark-color); /* Borde negro */
   color: var(--dark-color); /* Texto negro */
@@ -1837,19 +1837,19 @@ main .course-detail .class-list{
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
 
-.just-bought-course h2 {
+.just-bought-item h2 {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
 
-.just-bought-course p {
+.just-bought-item p {
   font-size: 1rem;
   margin-bottom: 1.5rem;
   color: var(--dark-color);
 }
 
-.just-bought-course .btn-primary {
+.just-bought-item .btn-primary {
   background-color: var(--dark-color); /* Fondo negro */
   color: var(--light-color); /* Texto blanco */
   border: none;
@@ -1859,7 +1859,7 @@ main .course-detail .class-list{
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.just-bought-course .btn-primary:hover {
+.just-bought-item .btn-primary:hover {
   background-color: var(--hover-color); /* Fondo amarillo más oscuro */
   transform: scale(1.05);
 }

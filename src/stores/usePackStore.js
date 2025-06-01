@@ -28,6 +28,7 @@ export const usePackStore = create((set) => ({
   },
 
   fetchPack: async (packId) => {
+    console.log("Fetching pack with ID:", packId);
     set({ loading: true });
     try {
       const response = await PackRepository.getPack(packId);

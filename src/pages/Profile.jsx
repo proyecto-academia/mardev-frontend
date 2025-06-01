@@ -9,6 +9,7 @@ import EnrollmentList from "../components/lists/EnrollmentList";
 import PurchaseList from "../components/lists/PurchaseList";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { usePackStore } from "../stores/usePackStore";
 
 export default function Profile() {
   const { courses, fetchAvailableCourses } = useAvailableContentStore();
@@ -16,8 +17,11 @@ export default function Profile() {
   const { userEnrollments } = useEnrollmentStore();
   const { purchases } = usePurchasesStore();
 
-  const { id: justBoughtCourseId } = useParams();
-  const [justBoughtCourse, setJustBoughtCourse] = useState(null); 
+  const { id: justBoughtCourseId, packId: justBoughtPackId } = useParams(); // Obtener IDs de curso y pack
+  const [justBoughtCourse, setJustBoughtCourse] = useState(null);
+  const [justBoughtPack, setJustBoughtPack] = useState(null); // Estado para el pack comprado
+
+  const {singlePack, fetchPack } = usePackStore();
 
   useEffect(() => {
     // Cargar los cursos si no están disponibles
@@ -40,17 +44,36 @@ export default function Profile() {
           })
         );
         useAvailableContentStore.setState({ courses: updatedCourses });
+
+        // Actualizar el curso recién comprado
         if (justBoughtCourseId) {
           const justBoughtCourse = updatedCourses.find(
             (course) => Number(course.id) === Number(justBoughtCourseId)
           );
-          setJustBoughtCourse(justBoughtCourse); // Actualizar el estado correctamente
+          setJustBoughtCourse(justBoughtCourse);
         }
       };
 
       fetchPhotos();
     }
   }, [fetchAvailableCourses, courses, justBoughtCourseId]);
+
+  useEffect(() => {
+    // Cargar el pack recién comprado
+    const fetchJustBoughtPack = async () => {
+      if (justBoughtPackId) {
+        try {
+          await fetchPack(justBoughtPackId);
+          setJustBoughtPack(singlePack);
+          console.log("Just bought pack:", singlePack);
+        } catch (error) {
+          console.error("Error fetching just bought pack:", error);
+        }
+      }
+    };
+
+    fetchJustBoughtPack();
+  }, [justBoughtPackId, fetchPack, singlePack]);
 
   useEffect(() => {
     // Cargar las inscripciones del usuario
@@ -80,20 +103,29 @@ export default function Profile() {
 
   return (
     <>
-      <h1>User Profile</h1>
-      <UserInfo user={JSON.parse(localStorage.getItem("user"))} />
+      
       {justBoughtCourse && (
         <>
-          <h1>Congratulations on your purchase!</h1>
-          <div className="just-bought-course">
+          <h1>Congratulations on your course purchase!</h1>
+          <div className="just-bought-item">
             <h2>{justBoughtCourse.name}</h2>
             <p>{justBoughtCourse.description}</p>
             <Link to={`/courses/${justBoughtCourse.id}`}>
-            <button className="btn-primary">Ver curso</button>
+              <button className="btn-primary">View Course</button>
             </Link>
           </div>
         </>
       )}
+      {justBoughtPack && (
+        <>
+          <h1>Congratulations on your pack purchase!</h1>
+          <div className="just-bought-item">
+            <h2>{justBoughtPack.name}</h2>
+            <p>{justBoughtPack.description}</p>
+          </div>
+        </>
+      )}
+      <UserInfo user={JSON.parse(localStorage.getItem("user"))} />
       <h1>My courses</h1>
       <CourseList courses={courses} />
       <h1>Enrollments</h1>

@@ -36,6 +36,7 @@ export default function AppRoutes() {
             <Route element={<PrivateLayout />}>
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/course/:id" element={<Profile />} />
+              <Route path="/profile/pack/:packId" element={<Profile />} />
               <Route path="/courses" element={<CourseList />} />
               <Route path="/courses/buy/:id" element={<CourseBuy />} />
               <Route path="/packs" element={<PackListIncludedCourses />} />

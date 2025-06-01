@@ -11,53 +11,82 @@ export default function RegisterForm() {
   const navigate = useNavigate();
   const fetchAvailableCourses = useAvailableContentStore((state) => state.fetchAvailableCourses);
 
-  const [errors, setErrors] = useState({}); // Estado para almacenar errores
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+  });
+  const [hasErrors, setHasErrors] = useState(false);
 
-  const validateForm = (name, email, password, passwordConfirmation) => {
-    const newErrors = {};
+  const validateForm = (field) => {
+    const newErrors = { ...errors };
 
-    // Validación de nombre
-    if (!name || name.length < 2) {
-      newErrors.name = "Name must be at least 2 characters.";
+    if (field === "name" || field === "all") {
+      if (!formData.name || formData.name.length < 2) {
+        newErrors.name = "Name must be at least 2 characters.";
+      } else {
+        delete newErrors.name;
+      }
     }
 
-    // Validación de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      newErrors.email = "Please enter a valid email address.";
+    if (field === "email" || field === "all") {
+      if (!formData.email || !emailRegex.test(formData.email)) {
+        newErrors.email = "Please enter a valid email address.";
+      } else {
+        delete newErrors.email;
+      }
     }
 
-    // Validación de contraseña
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
-    if (!password || !passwordRegex.test(password)) {
-      newErrors.password =
-        "Password must be at least 6 characters long and include both letters and numbers.";
+    if (field === "password" || field === "all") {
+      if (!formData.password || !passwordRegex.test(formData.password)) {
+        newErrors.password =
+          "Password must be at least 6 characters long and include both letters and numbers.";
+      } else {
+        delete newErrors.password;
+      }
     }
 
-    // Validación de confirmación de contraseña
-    if (password !== passwordConfirmation) {
-      newErrors.passwordConfirmation = "Passwords do not match.";
+    if (field === "passwordConfirmation" || field === "all") {
+      if (formData.password !== formData.passwordConfirmation) {
+        newErrors.passwordConfirmation = "Passwords do not match.";
+      } else {
+        delete newErrors.passwordConfirmation;
+      }
     }
 
-    return newErrors;
+    setErrors(newErrors);
+    setHasErrors(Object.keys(newErrors).length > 0);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (hasErrors) {
+      validateForm(name, value);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const passwordConfirmation = e.target.passwordConfirmation.value;
 
-    // Validar el formulario
-    const validationErrors = validateForm(name, email, password, passwordConfirmation);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    validateForm("all");
+    if (Object.keys(errors).length > 0) {
+      setHasErrors(true);
       return;
     }
 
     try {
-      const data = await AuthRepository.register(name, email, password, passwordConfirmation);
+      const data = await AuthRepository.register(
+        formData.name,
+        formData.email,
+        formData.password,
+        formData.passwordConfirmation
+      );
       const token = data.access_token;
       const user = data.user;
       authStore.save(user, token);
@@ -67,8 +96,21 @@ export default function RegisterForm() {
         navigate("/packs");
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setErrors({ general: error.response.data.message });
+      if (error.response && error.response.data) {
+        const responseErrors = error.response.data.errors || {};
+        const newErrors = {};
+
+        Object.keys(responseErrors).forEach((field) => {
+          newErrors[field] = responseErrors[field].join(" ");
+        });
+
+        setErrors(newErrors);
+        setHasErrors(Object.keys(newErrors).length > 0);
+
+        if (!Object.keys(newErrors).length && error.response.data.message) {
+          setErrors({ general: error.response.data.message });
+          setHasErrors(true);
+        }
       }
       notificationStore.addNotification("Registration failed: " + error.message, "error");
     }
@@ -93,8 +135,10 @@ export default function RegisterForm() {
             type="text"
             className="form-control"
             placeholder="Enter your name"
+            value={formData.name}
+            onChange={handleChange}
           />
-          {errors.name && <small className=" text-danger alert-danger">{errors.name}</small>}
+          {errors.name && <small className="alert-danger text-danger">{errors.name}</small>}
         </div>
 
         <div className="form-group">
@@ -107,9 +151,10 @@ export default function RegisterForm() {
             type="email"
             className="form-control"
             placeholder="Enter your email"
-            aria-describedby="email-help"
+            value={formData.email}
+            onChange={handleChange}
           />
-          {errors.email && <small className=" text-danger alert-danger">{errors.email}</small>}
+          {errors.email && <small className="alert-danger text-danger">{errors.email}</small>}
         </div>
 
         <div className="form-group">
@@ -122,8 +167,10 @@ export default function RegisterForm() {
             type="password"
             className="form-control"
             placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
           />
-          {errors.password && <small className=" text-danger alert-danger">{errors.password}</small>}
+          {errors.password && <small className="alert-danger text-danger">{errors.password}</small>}
         </div>
 
         <div className="form-group">
@@ -136,9 +183,11 @@ export default function RegisterForm() {
             type="password"
             className="form-control"
             placeholder="Confirm your password"
+            value={formData.passwordConfirmation}
+            onChange={handleChange}
           />
           {errors.passwordConfirmation && (
-            <small className=" text-danger alert-danger">{errors.passwordConfirmation}</small>
+            <small className="alert-danger text-danger">{errors.passwordConfirmation}</small>
           )}
         </div>
 
