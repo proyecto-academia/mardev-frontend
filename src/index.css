@@ -289,8 +289,16 @@ button:hover {
   max-width: 30vw;
   width: 220px;
   height: auto;
-
+  min-height: 100px;
 }
+
+.main-logo img {
+  min-height: 100px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 
 header.header {
   background-color: var(--dark-color);
@@ -1936,4 +1944,23 @@ section.packs-list .packs-container .pack-card-wrapper.selected .pack-card{
 
 .alert-danger{
   color: var(--error-color);
+}
+
+header .header-flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1em 0;
+}
+
+.burger-button-custom{
+  background: none;
+
+}
+
+.burger-button-custom:hover{
+  background: none;
 }
