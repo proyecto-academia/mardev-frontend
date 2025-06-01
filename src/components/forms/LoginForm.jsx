@@ -4,11 +4,13 @@ import AuthRepository from "../../api/auth/AuthRepository";
 import { useNotificationStore } from "../../stores/useNotificationStore";
 import { Link, useNavigate } from "react-router-dom";
 import { resetAllStores } from "../../helpers/resetAllStores";
+import { useState } from "react";
 
 export default function LoginForm() {
   const authStore = useAuthStore();
   const notificationStore = useNotificationStore();
   const fetchAvailableCourses = useAvailableContentStore((state) => state.fetchAvailableCourses)
+  const [errrorText, setErrorText] = useState("");
   
   const navigate = useNavigate();
 
@@ -27,6 +29,10 @@ export default function LoginForm() {
         navigate("/courses");
       }
     } catch (error) {
+      console.error("Login error:", error);
+      if(error.response && error.response.data && error.response.data.message) {
+        setErrorText(error.response.data.message);
+      }
       notificationStore.addNotification(
         "Login failed: " + error.message,
         "error"
@@ -38,6 +44,11 @@ export default function LoginForm() {
     <>
       <form id="login-form" onSubmit={handleSubmit}>
         <h1>Login form</h1>
+        {errrorText && (
+          <div className="alert alert-danger" role="alert">
+            {errrorText}
+          </div>
+        )}
         <div className="form-group">
           <label htmlFor="email-input" className="form-label">
             Email Address

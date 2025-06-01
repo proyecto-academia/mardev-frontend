@@ -1934,3 +1934,6 @@ section.packs-list .packs-container .pack-card-wrapper.selected .pack-card{
   width: 100%;
 }
 
+.alert-danger{
+  color: var(--error-color);
+}
