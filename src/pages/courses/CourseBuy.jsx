@@ -45,6 +45,9 @@ export default function CourseBuy() {
         <PaymentProvider itemId={id} itemType={itemType} token={token}>
           <CheckoutForm token={token} successUrl={`/profile/course/${id}`}/>
           <ul>
+            <li>
+              <strong>Course Name:</strong> {singleCourse.name}
+            </li>
           <li>
             <strong>Estimated Hours:</strong> {singleCourse.estimated_hours}
           </li>

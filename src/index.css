@@ -1917,3 +1917,20 @@ section.packs-list .packs-container .pack-card-wrapper .pack-card a{
 section.packs-list .packs-container .pack-card-wrapper.selected .pack-card{
   box-shadow: 0 0 10px var(--primary-color);
 }
+
+.pack-available-courses-auto-slider-container{
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  margin-top: 2em;
+}
+
+.pack-buy{
+  display: flex;
+  justify-content: center;
+}
+
+.pack-buy .checkout-container{
+  width: 100%;
+}
+
